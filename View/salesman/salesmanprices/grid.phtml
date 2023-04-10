@@ -1,0 +1,51 @@
+<?php
+$salesmanprices = $this->getPrices()->getData();
+
+$salesmanId = Ccc::getRegistry('salesman_id');
+
+?>
+
+<form method="post" action="<?php echo $this->getUrl('save','salesman_price',['salesman_id' => $salesmanId]); ?>">
+	<div class="d-flex align-items-center justify-content-sm-between">
+	<p class="fw-bolder fs-4">Manage Salesman</p>
+		<select>
+			<option>select salesman</option>
+			<?php foreach($salesmans as $salesman): ?>
+			<option value="<?php echo $salesman->salesman_id;
+							if($salesman->salesman_id == $salesmanId){
+								echo "selected";
+								}?>"> 
+							<?php echo $salesman->first_name; ?>
+			</option>
+			<?php endforeach; ?>
+		</select>
+	<button class="btn btn-dark ms-5">Update</button>
+	
+		<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','salesman'); ?>">Cancel</a></div>
+	
+</div>
+<table class="table table-striped text-center ">
+	<tr>
+		<th>Product_id</th>
+		<th>Name</th>
+		<th>SKU</th>
+		<th>Cost</th>
+		<th>Price</th>
+		<th>S Price</th>
+		<th>Remove</th>
+	</tr>
+	<?php foreach($salesmanprices as $salesmanprice): ?>
+		<tr>
+			<td><?php echo $salesmanprice->product_id; ?></td>
+			<td><?php echo $salesmanprice->name; ?></td>
+			<td><?php echo $salesmanprice->SKU; ?></td>
+			<td><?php echo $salesmanprice->cost; ?></td>
+			<td><?php echo $salesmanprice->price; ?></td>
+			<td><input type="number" name="sprice[<?php echo $salesmanprice->product_id;?>]" value="<?php echo $salesmanprice->salesman_price; ?>"> </td>
+			<td><a  class="remove" href="<?php echo $this->getUrl('delete','salesman_price',['salesman_id' => $salesmanId, 'product_id' => $salesmanprice->product_id], true); ?>">remove</a></td>
+		</tr>
+	<?php endforeach; ?>
+</table>
+</form>
+</body>
+</html>

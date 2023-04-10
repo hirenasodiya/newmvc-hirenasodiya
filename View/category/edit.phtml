@@ -1,0 +1,78 @@
+<?php 
+$category = $this->getCategory();
+$pathCategories = $this->categories;
+
+
+// print_r($pathCategories);
+?>
+<form action="<?php echo $this->getUrl('save','category')?>" method="post">
+
+<div class="d-flex align-items-center justify-content-sm-between">
+	<p class="fw-bolder fs-4">Edit Product</p>
+	<button class="btn btn-dark ms-5">Save</button>
+	<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','category', [], true);?>">cancel</a></div>
+</div>
+<table class="table table-striped">
+	<tr>
+		<td>
+			<label>name</label>
+		</td>
+		<td>
+			<input type="text" name="category[name]" value="<?php echo $category->name ; ?> ">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>status</label>
+		</td>
+		<td>
+			<select name="category[status]" >
+				<?php foreach($category->getResource()->getStatusOptions() as $key => $value): ?>
+				<?php $selected = ($key == $category->getStatus()) ? 'selected' : ''; ?>
+				<option value="<?php echo $key; ?>" <?php echo $selected ;?>> <?php echo $value;?>
+				 </option>
+				<?php endforeach; ?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>description</label>
+		</td>
+		<td>
+			<textarea name="category[description]"><?php echo $category->description ; ?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>parent</label>
+		</td>
+		<td>
+			<select name="parent_id">
+							<option>Please Select</option>
+							<?php foreach ($categories as $catData): 
+								if ($catData->parent_id == 0) {
+							?>
+							<option value="<?php echo $catData->category_id; ?>" <?php if ($catData->category_id == $categoryId) {
+								echo "selected";
+							} ?>><?php echo $catData->name; ?></option>
+								<?php
+
+								}else{
+									$childName = $this->child($catData->parent_id);
+									echo $childName. '/' .$catData->name;
+									?>
+								<option value="<?php echo $catData->category_id ?>"  <?php if ($catData->category_id == $categoryId) {
+								echo "selected";
+							} ?> > <?php echo $childName. '/' .$catData->name; ?> </option>
+								<?php 
+								}
+							?>
+							<?php endforeach;?>
+						</select>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

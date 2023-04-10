@@ -1,0 +1,135 @@
+<?php  
+$final = $this->getVendor();
+
+$vendor = $final[0];
+$address = $final[1];
+
+
+?>
+
+<form action="<?php echo $this->getUrl('save', 'vendor',); ?>" method="POST">
+<div class="d-flex align-items-center justify-content-sm-between">
+		<p class="fw-bolder fs-4">Edit Vendor</p>
+			<button class="btn btn-dark ms-5">Save</button>
+			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','vendor', [], true);?>">cancel</a></div>
+		</div>
+<table class="table table-striped">
+		<tr>
+			<td>
+				<label>first_name</label>
+			</td>
+			<td>
+				<input type="text" name="vendor[first_name]" value="<?php echo $vendor->first_name;?>">
+				<input type="hidden" name="updated_at" value="" required>
+				
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>last_name</label>
+			</td>
+			<td>
+				<input type="text" name="vendor[last_name]"value="<?php echo $vendor->last_name;?>">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>email</label>
+			</td>
+			<td>
+				<input type="email" name="vendor[email]"value="<?php echo $vendor->email;?>">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>gender</label>
+			</td>
+			<td>
+				<select name="vendor[gender]">
+				<option value="male" <?php if ($vendor->gender === 'male'){
+													echo "selected";}
+												?>>male</option>
+					
+				<option value="female" <?php if ($vendor->gender === 'female'){
+													echo "selected";}
+												?>>female</option>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>mobile</label>
+			</td>
+			<td>
+				<input type="mobile" name="vendor[mobile]"value="<?php echo $vendor->mobile;?>">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>status</label>
+			</td>
+			<td>
+				<select name="vendor[status]" >
+				<?php foreach($vendor->getResource()->getStatusOptions() as $key => $value): ?>
+				<?php $selected = ($key == $vendor->getStatus()) ? 'selected' : ''; ?>
+				<option value="<?php echo $key; ?>" <?php echo $selected ;?>> <?php echo $value;?>
+				 </option>
+				<?php endforeach; ?>
+			</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>company</label>
+			</td>
+			<td>
+				<input type="text" name="vendor[company]"value="<?php echo $vendor->company;?>">
+			</td>
+		</tr>
+	</table>
+	<br>
+	<p class="fw-bolder fs-4">Edit Address</p>
+	<table class="table table-striped">
+		<tr>
+			<td>
+				<label>address</label>
+			</td>
+			<td>
+				<input type="text" name="address[address]" value="<?php echo $address->address;?>">
+			</td>			
+		</tr>
+		<tr>
+			<td>
+				<label>city</label>
+			</td>
+			<td>
+				<input type="text" name="address[city]" value="<?php echo $address->city;?>">
+			</td>			
+		</tr>
+		<tr>
+			<td>
+				<label>state</label>
+			</td>
+			<td>
+				<input type="text" name="address[state]" value="<?php echo $address->state;?>">
+			</td>			
+		</tr>
+		<tr>
+			<td>
+				<label>country</label>
+			</td>
+			<td>
+				<input type="text" name="address[country]"value="<?php echo $address->country;?>">
+			</td>			
+		</tr>
+		<tr>
+			<td>
+				<label>zipcode</label>
+			</td>
+			<td>
+				<input type="text" name="address[zipcode]"value="<?php echo $address->zipcode;?>">
+			</td>			
+		</tr>
+	</table>
+</form>
+</body>
+</html>

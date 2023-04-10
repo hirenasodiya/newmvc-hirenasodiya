@@ -1,0 +1,49 @@
+<?php  
+
+$salesmans = $this->getCollection()->getdata();
+
+?>
+<div class="d-flex align-items-center justify-content-sm-between">
+	<p class="fw-bolder fs-4">Manage Salesman</p>
+	
+		<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('add','salesman'); ?>">Add Salesman</a></div>
+	
+</div>
+<table class="table table-striped text-center ">
+	<tr>
+      <th>salesman_id</th>
+	  <th>first_name</th>
+	  <th>last_name</th>
+	  <th>email</th>
+	  <th>gender</th>
+	  <th>mobile</th>
+	  <th>status</th>
+	  <th>company</th>
+	  <th>created_at</th>
+	  <th>updated_at</th>
+	  <th>prices</th>
+	  <th>edit</th>
+	  <th>delete</th>
+	</tr>
+
+<?php foreach($salesmans as $salesman): ?>
+	<tr>
+	  <td><?php echo $salesman->salesman_id; ?></td>	
+	  <td><?php echo $salesman->first_name; ?></td>	
+	  <td><?php echo $salesman->last_name; ?></td>	
+	  <td><?php echo $salesman->email; ?></td>	
+	  <td><?php echo $salesman->gender; ?></td>	
+	  <td><?php echo $salesman->mobile; ?></td>	
+	  <td><?php echo $salesman->getStatusText($salesman->status); ?></td>
+	  <td><?php echo $salesman->company; ?></td>	
+	  <td><?php echo $salesman->created_at; ?></td>	
+	  <td><?php echo $salesman->updated_at; ?></td>
+
+	  <td><a href="<?php echo $this->getUrl('grid','salesman_price', ['salesman_id' => $salesman->salesman_id]); ?>">prices</a></td>	
+	  <td><a href="<?php echo $this->getUrl('edit','salesman', ['salesman_id' => $salesman->salesman_id]); ?>">edit</a></td>	
+	  <td><a href="<?php echo $this->getUrl('delete','salesman', ['salesman_id' => $salesman->salesman_id]); ?>">delete</a></td>	
+	</tr>
+	<?php  endforeach; ?>
+</table>
+</body>
+</html>

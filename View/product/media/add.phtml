@@ -1,0 +1,63 @@
+ <?php
+
+$final = $this->getMedia();
+$productId = $final[0];
+$media = $final[1]; 
+// print_r($productMedia);
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="Skin/css/mediaadd.css">
+</head>
+<body>
+<form action="<?php echo $this->getUrl( 'save','product_media', ['product_id' => $productId]); ?>" method="POST" enctype="multipart/form-data">
+	<div class="main">
+		<div class="title">
+			<label>Add Media</label>
+		</div>
+		<div class="btn">
+			<button class="btn1">ADD</button>
+			<a href="<?php echo $this->getUrl('grid', 'product_media',['product_id' => $productId]); ?>">Cancel</a>
+		</div>
+	</div>
+	<br>
+	<table border="2" style="font-size: 30px;">
+		<tr>
+			<td>
+				<label>Name</label>
+			</td>
+			<td>
+				<input type="text" name="media[name]" required>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>Status</label>
+			</td>
+			<td>
+                <select name="media[status]">
+                    <?php foreach($media->getResource()->getStatusOptions() as $key => $value): ?>
+                    <?php $selected = ($key == $media->getStatus()) ? 'selected' : ''; ?>
+                    <option value="<?php echo $key; ?>" <?php echo $selected; ?>> <?php echo $value; ?> </option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+		</tr>
+		<tr>
+			<td>
+				<label>Image</label>
+			</td>
+			<td>
+				<input type="file" name="media[image]" required>
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

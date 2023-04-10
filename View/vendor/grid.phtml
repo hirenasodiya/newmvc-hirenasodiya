@@ -1,0 +1,51 @@
+<?php  
+$vendors = $this->getCollection()->getData();
+?>
+
+<div class="d-flex align-items-center justify-content-sm-between">
+	<p class="fw-bolder fs-4">Manage Vendor</p>
+	
+		<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('add','vendor'); ?>">Add Vendor</a></div>
+	
+</div>
+<table class="table table-striped text-center ">
+	<tr>
+		<th>vendor_id</th>
+		<th>first_name</th>
+		<th>last_name</th>
+		<th>email</th>
+		<th>gender</th>
+		<th>mobile</th>
+		<th>status</th>
+		<th>company</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+		<th>edit</th>
+		<th>delete</th>
+	</tr>
+	<?php if (!$vendors):?>
+		<tr>
+			<td colspan="16">No record found</td>
+		</tr>
+	<?php else: ?>
+	<?php foreach($vendors as $vendor): ?>
+	<tr>
+		<td><?php echo $vendor->vendor_id; ?></td>
+		<td><?php echo $vendor->first_name; ?></td>
+		<td><?php echo $vendor->last_name; ?></td>
+		<td><?php echo $vendor->email; ?></td>
+		<td><?php echo $vendor->gender; ?></td>
+		<td><?php echo $vendor->mobile; ?></td>
+		<td><?php echo $vendor->getStatusText($vendor->status); ?></td>
+		<td><?php echo $vendor->company; ?></td>
+		<td><?php echo $vendor->created_at; ?></td>
+		<td><?php echo $vendor->updated_at; ?></td>
+
+
+		<td><a href="<?php echo $this->getUrl('edit', 'vendor',['vendor_id' => $vendor->vendor_id]); ?>">edit</a></td>
+		<td><a href="<?php echo $this->getUrl('delete', 'vendor',['vendor_id' => $vendor->vendor_id]); ?>">delete</a></td>
+	</tr>
+	<?php endforeach; ?>
+	<?php endif;?>
+
+</table>

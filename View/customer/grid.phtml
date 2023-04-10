@@ -1,0 +1,43 @@
+<?php  
+
+$customers = $this->getCollection()->getdata();
+?>
+<div class="d-flex align-items-center justify-content-sm-between">
+	<p class="fw-bolder fs-4">Manage Customer</p>
+	
+		<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('add','customer'); ?>">Add Customer</a></div>
+	
+</div>
+<table class="table table-striped text-center ">
+	<tr>
+		<th>customer_id</th>
+		<th>first_name</th>
+		<th>last_name</th>
+		<th>email</th>
+		<th>gender</th>
+		<th>mobile</th>
+		<th>status</th>
+		<th>created_at</th>
+		<th>updated_at</th>
+		<th>edit</th>
+		<th>delete</th>
+	</tr>
+	<?php foreach($customers as $customer): ?> 
+	<tr>
+		<td><?php echo $customer->customer_id; ?></td>
+		<td><?php echo $customer->first_name; ?></td>
+		<td><?php echo $customer->last_name; ?></td>
+		<td><?php echo $customer->email; ?></td>
+		<td><?php echo $customer->gender; ?></td>
+		<td><?php echo $customer->mobile; ?></td>
+		<td><?php echo $customer->getStatusText($customer->status); ?></td>
+		<td><?php echo $customer->created_at; ?></td>
+		<td><?php echo $customer->updated_at; ?></td>
+		
+		<td><a href="<?php echo $this->getUrl('edit','customer', ['customer_id' => $customer->customer_id]);?>">edit</td>
+		<td><a href="<?php echo $this->getUrl('delete','customer', ['customer_id' => $customer->customer_id]);?>">delete</td>
+	</tr>
+<?php endforeach; ?>
+</table>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<?php 
+$admin = $this->getAdmin();
+?>
+
+<form action="<?php echo $this->getUrl('save','admin');?>" method="post">
+<div class="d-flex align-items-center justify-content-sm-between">
+		<p class="fw-bolder fs-4">Edit Admin</p>
+			<button class="btn btn-dark ms-5">Save</button>
+			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','admin', [], true);?>">cancel</a></div>
+		</div>
+<table class="table table-striped">
+	<tr>
+		<td>Email</td>
+		<td><input type="text" name="admin[email]" value="<?php  echo $admin->email ?>"></td>
+	</tr>
+	<tr>
+		<td>status</td>
+		<td><input type="text" name="admin[status]" value="<?php  echo $admin->status ?>"></td>
+	</tr>
+	<tr>
+		<td>password</td>
+		<td><input type="text" name="admin[password]" value="<?php  echo $admin->password ?>"></td>
+	</tr>
+</table>
+</form>

@@ -1,0 +1,38 @@
+<?php  
+
+$shippingMethods = $this->getShippingMethods()->getData();
+
+?>
+<div class="d-flex align-items-center justify-content-sm-between">
+	<p class="fw-bolder fs-4">Manage Shippingmethod</p>
+	
+		<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('add','shippingmethod'); ?>">Add Shippingmethod</a></div>
+	
+</div>
+<table class="table table-striped text-center ">
+		<tr>
+			<th>shipping_method_id</th>
+			<th>name</th>
+			<th>amount</th>
+			<th>status</th>
+			<th>created_at</th>
+			<th>update_at</th>
+			<th>edit</th>
+			<th>delete</th>
+		</tr>
+		<?php foreach($shippingMethods as $shippingMethod):?>
+			<tr>
+				<td><?php echo $shippingMethod->shipping_method_id; ?></td>
+				<td><?php echo $shippingMethod->name; ?></td>
+				<td><?php echo $shippingMethod->amount; ?></td>
+			  	<td><?php echo $shippingMethod->getStatusText($shippingMethod->status); ?></td>
+				<td><?php echo $shippingMethod->created_at; ?></td>
+				<td><?php echo $shippingMethod->updated_at; ?></td>
+
+				<td><a href="<?php echo $this->getUrl('edit','shippingmethod', ['shipping_method_id' => $shippingMethod->shipping_method_id]); ?>">edit</a></td>
+				<td><a href="<?php echo $this->getUrl('delete','shippingmethod', ['shipping_method_id' => $shippingMethod->shipping_method_id]); ?>">delete</a></td>
+			</tr>
+		<?php endforeach; ?>
+	</table>
+</body>
+</html>

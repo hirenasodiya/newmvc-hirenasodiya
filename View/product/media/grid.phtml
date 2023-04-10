@@ -1,0 +1,62 @@
+<?php  
+
+$medias = $this->getMedias()->getData();
+
+?>
+
+<form action="<?php echo $this->getUrl('save','product_media'); ?>" method="POST">
+<div class="d-flex align-items-center justify-content-sm-between">
+		<p class="fw-bolder fs-4">Media info</p>
+		<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('add','product_media', [], true);?>">add</a></div>
+			<button class="btn btn-dark ms-5" name="submit" value="update">Update</button>
+			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','product', [], true);?>">cancel</a></div>
+		</div>
+<table class="table table-striped">
+	<tr>
+		<th>Media_id</th>
+		<th>Product_id</th>
+		<th>Name</th>
+		<th>Status</th>
+		<th>Image</th>
+		<th>Base</th>
+		<th>Thumbnail</th>
+		<th>Small</th>
+		<th>Gallery</th>
+		<th>Delete</th>
+	</tr>
+	<?php foreach($medias as $media): ?>
+	<tr>
+		<td><?php echo $media->media_id ; ?></td>
+		<td><?php echo $media->product_id ; ?></td>
+		<td><?php echo $media->name ; ?></td>
+		<td><?php echo $media->getStatusText($media->status); ?>
+		</td>
+		<td><img src="View/product/media/upload/<?php echo $media->image ; ?>" height= "100" width="100"></td>
+		<td><input type="radio" name="base" value="<?php echo $media->media_id ;?>"
+			<?php if ($media->base != '0') {
+				echo "checked";
+			}
+		 	?>></td>
+		<td><input type="radio" name="thumbnail" value="<?php echo $media->media_id ;?>"
+			<?php if ($media->thumbnail != '0') {
+				echo "checked";
+			}
+		 	?>></td>
+		<td><input type="radio" name="small" value="<?php echo $media->media_id ;?>"
+			<?php if ($media->small != '0') {
+				echo "checked";
+			}
+		 	?>></td>
+		<td><input type="checkbox" name="gallery[]" value="<?php echo $media->media_id ;?>"
+			<?php if ($media->gallery != '0') {
+				echo "checked";
+			}
+		 	?>></td>
+		<td><a href="<?php echo $this->getUrl('delete','product_media', ['product_id' => $productId, 'media_id' => $media->media_id], true); ?>">delete</a></td>
+		
+	</tr>
+	<?php endforeach;?>
+</table>
+</form>
+</body>
+</html>
