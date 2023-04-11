@@ -1,5 +1,5 @@
 <?php  
-$vendors = $this->getCollection()->getData();
+$vendors = $this->getCollection();
 ?>
 
 <div class="d-flex align-items-center justify-content-sm-between">
@@ -28,7 +28,7 @@ $vendors = $this->getCollection()->getData();
 			<td colspan="16">No record found</td>
 		</tr>
 	<?php else: ?>
-	<?php foreach($vendors as $vendor): ?>
+	<?php foreach($vendors->getData() as $vendor): ?>
 	<tr>
 		<td><?php echo $vendor->vendor_id; ?></td>
 		<td><?php echo $vendor->first_name; ?></td>

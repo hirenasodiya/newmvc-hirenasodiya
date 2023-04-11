@@ -1,6 +1,6 @@
 <?php  
 
-$shippingMethods = $this->getShippingMethods()->getData();
+$shippingMethods = $this->getShippingMethods();
 
 ?>
 <div class="d-flex align-items-center justify-content-sm-between">
@@ -20,7 +20,7 @@ $shippingMethods = $this->getShippingMethods()->getData();
 			<th>edit</th>
 			<th>delete</th>
 		</tr>
-		<?php foreach($shippingMethods as $shippingMethod):?>
+		<?php foreach($shippingMethods->getData() as $shippingMethod):?>
 			<tr>
 				<td><?php echo $shippingMethod->shipping_method_id; ?></td>
 				<td><?php echo $shippingMethod->name; ?></td>

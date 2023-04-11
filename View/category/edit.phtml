@@ -1,11 +1,11 @@
 <?php 
 $category = $this->getCategory();
-$pathCategories = $this->categories;
+$pathCategories = $category->getParentCategories();
 
 
 // print_r($pathCategories);
 ?>
-<form action="<?php echo $this->getUrl('save','category')?>" method="post">
+<form action="<?php echo $this->getUrl('save','category', ['category_id' => $category->getId()])?>" method="post">
 
 <div class="d-flex align-items-center justify-content-sm-between">
 	<p class="fw-bolder fs-4">Edit Product</p>
@@ -14,6 +14,17 @@ $pathCategories = $this->categories;
 </div>
 <table class="table table-striped">
 	<tr>
+		<tr>
+			<td>Parent Category</td>
+			<td>
+				<select name="category[parent_id]">
+					<?php foreach ($pathCategories as $category_id => $path):?>
+					<?php $selected = ($category_id == $category->parent_id) ? 'selected' : '' ?>
+						<option value="<?php echo $category_id ?>" <?php echo $selected ?>><?php echo $category->getPathCategories($category_id) ?></option>
+					<?php endforeach; ?>
+				</select>
+			</td>
+		</tr>
 		<td>
 			<label>name</label>
 		</td>
@@ -41,35 +52,6 @@ $pathCategories = $this->categories;
 		</td>
 		<td>
 			<textarea name="category[description]"><?php echo $category->description ; ?></textarea>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<label>parent</label>
-		</td>
-		<td>
-			<select name="parent_id">
-							<option>Please Select</option>
-							<?php foreach ($categories as $catData): 
-								if ($catData->parent_id == 0) {
-							?>
-							<option value="<?php echo $catData->category_id; ?>" <?php if ($catData->category_id == $categoryId) {
-								echo "selected";
-							} ?>><?php echo $catData->name; ?></option>
-								<?php
-
-								}else{
-									$childName = $this->child($catData->parent_id);
-									echo $childName. '/' .$catData->name;
-									?>
-								<option value="<?php echo $catData->category_id ?>"  <?php if ($catData->category_id == $categoryId) {
-								echo "selected";
-							} ?> > <?php echo $childName. '/' .$catData->name; ?> </option>
-								<?php 
-								}
-							?>
-							<?php endforeach;?>
-						</select>
 		</td>
 	</tr>
 </table>

@@ -14,6 +14,6 @@ class Block_Product_Media_Edit extends Block_Core_Template
 	}
 	public function getMedia()
 	{
-		return $this->getData('product');
+		return $this->getData('media');
 	}
 }

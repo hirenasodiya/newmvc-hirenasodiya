@@ -34,7 +34,7 @@ class Model_Core_Adapter {
 		{
 		    return $result->fetch_all(MYSQLI_ASSOC);
 		}
-		return $result;
+		return null;
 	}
 
 	public function fetchPairs($query)

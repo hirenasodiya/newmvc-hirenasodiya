@@ -1,5 +1,5 @@
 <?php  
-$paymentMethods = $this->getPaymentMethods()->getData();
+$paymentMethods = $this->getPaymentMethods();
 ?>
 <div class="d-flex align-items-center justify-content-sm-between">
 	<p class="fw-bolder fs-4">Manage Payment method</p>
@@ -17,7 +17,7 @@ $paymentMethods = $this->getPaymentMethods()->getData();
 			<th>edit</th>
 			<th>delete</th>
 		</tr>
-		<?php foreach($paymentMethods as $paymentMethod):?>
+		<?php foreach($paymentMethods->getData() as $paymentMethod):?>
 			<tr>
 				<td><?php echo $paymentMethod->payment_method_id; ?></td>
 				<td><?php echo $paymentMethod->name; ?></td>

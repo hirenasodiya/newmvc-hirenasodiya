@@ -1,6 +1,6 @@
 <?php  
 
-$salesmans = $this->getCollection()->getdata();
+$salesmans = $this->getCollection();
 
 ?>
 <div class="d-flex align-items-center justify-content-sm-between">
@@ -26,7 +26,7 @@ $salesmans = $this->getCollection()->getdata();
 	  <th>delete</th>
 	</tr>
 
-<?php foreach($salesmans as $salesman): ?>
+<?php foreach($salesmans->getdata() as $salesman): ?>
 	<tr>
 	  <td><?php echo $salesman->salesman_id; ?></td>	
 	  <td><?php echo $salesman->first_name; ?></td>	

@@ -1,33 +1,18 @@
  <?php
 
-$final = $this->getMedia();
-$productId = $final[0];
-$media = $final[1]; 
-// print_r($productMedia);
+$media = $this->getMedia();
+$productId = Ccc::getRegistry('product_id');
+// print_r($productId);
+// print_r($media);
 
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-	<link rel="stylesheet" type="text/css" href="Skin/css/mediaadd.css">
-</head>
-<body>
-<form action="<?php echo $this->getUrl( 'save','product_media', ['product_id' => $productId]); ?>" method="POST" enctype="multipart/form-data">
-	<div class="main">
-		<div class="title">
-			<label>Add Media</label>
+<form action="<?php echo $this->getUrl('save','product_media', ['product_id' => $productId ])?>" method="post" enctype="multipart/form-data">
+<div class="d-flex align-items-center justify-content-sm-between">
+		<p class="fw-bolder fs-4">Edit Media</p>
+			<button class="btn btn-dark ms-5">Save</button>
+			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','product_media', [], true);?>">cancel</a></div>
 		</div>
-		<div class="btn">
-			<button class="btn1">ADD</button>
-			<a href="<?php echo $this->getUrl('grid', 'product_media',['product_id' => $productId]); ?>">Cancel</a>
-		</div>
-	</div>
-	<br>
-	<table border="2" style="font-size: 30px;">
+<table class="table table-striped">
 		<tr>
 			<td>
 				<label>Name</label>

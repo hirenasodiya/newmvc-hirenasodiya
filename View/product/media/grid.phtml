@@ -1,13 +1,13 @@
 <?php  
 
 $medias = $this->getMedias()->getData();
-
+$productId = Ccc::getRegistry('product_id');
 ?>
 
-<form action="<?php echo $this->getUrl('save','product_media'); ?>" method="POST">
+<form action="<?php echo $this->getUrl('save','product_media',['product_id' => $productId] ); ?>" method="POST">
 <div class="d-flex align-items-center justify-content-sm-between">
 		<p class="fw-bolder fs-4">Media info</p>
-		<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('add','product_media', [], true);?>">add</a></div>
+		<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('add','product_media', ['product_id' => $productId]);?>">Add</a></div>
 			<button class="btn btn-dark ms-5" name="submit" value="update">Update</button>
 			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','product', [], true);?>">cancel</a></div>
 		</div>
@@ -24,6 +24,12 @@ $medias = $this->getMedias()->getData();
 		<th>Gallery</th>
 		<th>Delete</th>
 	</tr>
+	<?php if (!$medias):?>
+		<tr>
+			<td colspan="16">No record found</td>
+		</tr>
+	<?php else: ?>
+
 	<?php foreach($medias as $media): ?>
 	<tr>
 		<td><?php echo $media->media_id ; ?></td>
@@ -56,6 +62,8 @@ $medias = $this->getMedias()->getData();
 		
 	</tr>
 	<?php endforeach;?>
+	<?php endif;?>
+
 </table>
 </form>
 </body>

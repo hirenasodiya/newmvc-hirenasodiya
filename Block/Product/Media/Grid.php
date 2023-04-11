@@ -14,7 +14,13 @@ class Block_Product_Media_Grid extends Block_Core_Template
 		$productId = Ccc::getModel('Core_Request')->getParam('product_id');
 		$query = "SELECT * FROM `media` WHERE `product_id` = {$productId}";
 		$medias = Ccc::getModel('Product_Media')->fetchAll($query);
-		return $medias;	
+		// return $medias;
+		if(!$medias){
+			return Ccc::getModel('Product_Media');
+		}	
+		else{
+			return $medias;
+		}
 	}
 
 }

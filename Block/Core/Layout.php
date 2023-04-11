@@ -31,7 +31,7 @@ class Block_Core_Layout extends Block_Core_Template
         $content = $this->createBlock('Html_Content');
         $this->addChild('content', $content);
 
-        // $right = $this->createBlock('Html_Right'));
+        // $right = $this->createBlock('Html_Right');
         // $this->addChild('right', $right);
 
         $footer = $this->createBlock('Html_Footer');

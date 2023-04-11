@@ -102,4 +102,27 @@ class Controller_Admin extends Controller_Core_Action
 		}
 			$this->redirect('grid', null, null, true);
 	}
+
+	public function deleteAction()
+	{
+		try {
+			Ccc::getModel('Core_Session')->start();
+			$id =  Ccc::getModel('Core_Request')->getParam('id');
+			if (!$id) {
+				throw new Exception("Id not found", 1);
+			}
+			$admin = Ccc::getModel('Admin')->load($id);
+			$result = $admin->delete();
+			if(!$result)
+			{
+				throw new Exception("Deletion failed", 1);
+			}
+			$this->getMessage()->addMessages('Data deleted successfully');
+			$this->redirect('grid', null, null, true);
+
+		} catch (Exception $e) {
+			$this->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+		}
+		$this->redirect('grid',null,[],true);
+	}
 }

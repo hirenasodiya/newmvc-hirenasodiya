@@ -30,7 +30,8 @@ class Controller_Product_Media extends Controller_Core_Action
 			$productId = Ccc::getModel('Core_Request')->getParam('product_id');
 			Ccc::register('product_id',$productId);
 			$layout = $this->getLayout();
-			$add = new Block_Product_Media_Edit();
+			$media = Ccc::getModel('Product_Media');
+			$add = $layout->createBlock('Product_Media_Edit')->setData(['media'=>$media]);
 			$layout->getChild('content')->addChild('add',$add);
 			$layout->render();
 
@@ -68,13 +69,15 @@ class Controller_Product_Media extends Controller_Core_Action
 
 				$mediaPost = Ccc::getModel('Product_Media');
 				$sql = "SELECT `media_id` FROM `media` WHERE `product_id` = {$productId}";
-				$id = $mediaPost->fetchAll($sql);
+				$id = $mediaPost->fetchAll($sql)->getData();
 				
 				foreach($id as $key => $value)
 				{	
 					$ids[] = $value->getData('media_id');
 				}
-
+				// echo "<pre>";
+				// print_r($ids);
+				// die();
 				foreach($ids as $key => $value)
 				{
 					$mediaIds['media_id'] = $value;
@@ -128,7 +131,7 @@ class Controller_Product_Media extends Controller_Core_Action
 			} else {
 				$mediaPost = Ccc::getModel('Product_Media');
 				$mediaPost->setData($mediaPostData['media']);
-				$mediaPost->create_at = date('Y-m-d h-i-sA');
+				$mediaPost->created_at = date('Y-m-d h-i-sA');
 				$mediaPost->product_id = $productId;
 
 				$result = $mediaPost->save();
@@ -142,6 +145,7 @@ class Controller_Product_Media extends Controller_Core_Action
 
 				$fileName = $mediaId.'.'.$extension;
 				$destination = 'view/product/media/upload/'.$fileName;
+
 				$result = move_uploaded_file($tmpName, $destination);
 
 				$mediaPost->image = $fileName;
@@ -175,14 +179,14 @@ class Controller_Product_Media extends Controller_Core_Action
 			$condition['product_id'] = $productId;
 			$condition['media_id'] = $mediaId;
 
-			$result = $this->getMediaModel()->delete($condition);
+			$result = Ccc::getModel('Product_Media_Resource')->delete($condition);
 			$this->getMessage()->addMessages('Data deleted', Model_Core_Message::SUCCESS);
 			
 		} catch (Exception $e) {
 			$this->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
 		
-		$this->redirect('product_media','grid', ['product_id' => $productId, 'media_id' => null]);
+		$this->redirect('grid','product_media', ['product_id' => $productId, 'media_id' => null]);
 
 	}
 

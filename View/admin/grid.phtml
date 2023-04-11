@@ -12,6 +12,7 @@
 		<td>created_at</td>
 		<td>updated_at</td>
 		<td>Edit</td>
+		<td>Delete</td>
 	</tr>
 
 	<?php if (!$admins):?>
@@ -27,6 +28,7 @@
 			<td><?php echo $admin->created_at; ?></td>
 			<td><?php echo $admin->updated_at; ?></td>
 			<td><a href="<?php echo $this->getUrl('edit', null, ['id' => $admin->admin_id])?>">Edit</a></td>
+			<td><a href="<?php echo $this->getUrl('delete', null,  ['id' => $admin->admin_id]); ?>">Delete</a></td>
 		</tr>	
 		<?php endforeach; ?>
 	<?php endif; ?>

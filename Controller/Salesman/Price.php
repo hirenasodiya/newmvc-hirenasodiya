@@ -51,7 +51,7 @@ class Controller_Salesman_Price extends Controller_Core_Action
 						$salesP['salesman_price'] = $sprice;
 
 						$salesmanPrice->setData($salesP);
-						$salesmanPrices = $salesmanPrice->save();
+						$prices = $salesmanPrice->save();
 					}
 				}else
 				{
