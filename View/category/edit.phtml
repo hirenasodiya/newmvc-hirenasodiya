@@ -1,0 +1,60 @@
+<?php 
+$category = $this->getCategory();
+$pathCategories = $category->getParentCategories();
+
+
+// print_r($pathCategories);
+?>
+<form action="<?php echo $this->getUrl('save','category', ['category_id' => $category->getId()])?>" method="post">
+
+<div class="d-flex align-items-center justify-content-sm-between">
+	<p class="fw-bolder fs-4">Edit Product</p>
+	<button class="btn btn-dark ms-5">Save</button>
+	<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','category', [], true);?>">cancel</a></div>
+</div>
+<table class="table table-striped">
+	<tr>
+		<tr>
+			<td>Parent Category</td>
+			<td>
+				<select name="category[parent_id]">
+					<?php foreach ($pathCategories as $category_id => $path):?>
+					<?php $selected = ($category_id == $category->parent_id) ? 'selected' : '' ?>
+						<option value="<?php echo $category_id ?>" <?php echo $selected ?>><?php echo $category->getPathCategories($category_id) ?></option>
+					<?php endforeach; ?>
+				</select>
+			</td>
+		</tr>
+		<td>
+			<label>name</label>
+		</td>
+		<td>
+			<input type="text" name="category[name]" value="<?php echo $category->name ; ?> ">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>status</label>
+		</td>
+		<td>
+			<select name="category[status]" >
+				<?php foreach($category->getResource()->getStatusOptions() as $key => $value): ?>
+				<?php $selected = ($key == $category->getStatus()) ? 'selected' : ''; ?>
+				<option value="<?php echo $key; ?>" <?php echo $selected ;?>> <?php echo $value;?>
+				 </option>
+				<?php endforeach; ?>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>description</label>
+		</td>
+		<td>
+			<textarea name="category[description]"><?php echo $category->description ; ?></textarea>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>

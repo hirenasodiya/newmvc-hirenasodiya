@@ -1,0 +1,37 @@
+<?php  
+
+$paymentMethod = $this->getPaymentMethod();
+
+?>
+
+<form action="<?php echo $this->getUrl('save','paymentmethod'); ?>" method="POST">
+	<div class="d-flex align-items-center justify-content-sm-between">
+		<p class="fw-bolder fs-4">Edit Payment method</p>
+			<button class="btn btn-dark ms-5">Save</button>
+			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','paymentmethod', [], true);?>">cancel</a></div>
+		</div>
+	<table class="table table-striped">
+		<tr>
+			<td>
+				<label>name</label>
+			</td>
+			<td>
+				<input type="text" name="paymentmethod[name]" value="<?php echo $paymentMethod->name; ?>">
+				<input type="hidden" name="updated_at" value=""required>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>status</label>
+			</td>
+			<td>
+				<select name="paymentmethod[status]" >
+				<?php foreach($paymentMethod->getResource()->getStatusOptions() as $key => $value): ?>
+				<?php $selected = ($key == $paymentMethod->getStatus()) ? 'selected' : ''; ?>
+				<option value="<?php echo $key; ?>" <?php echo $selected ;?>> <?php echo $value;?>
+				 </option>
+				<?php endforeach; ?>
+			</select>
+			</td>
+		</tr>
+	</table>

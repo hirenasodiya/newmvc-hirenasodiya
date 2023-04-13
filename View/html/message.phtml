@@ -1,0 +1,39 @@
+<div>
+	<?php 
+
+	$this->getMessage()->getSession()->start();
+	$messages = $this->getMessage()->getMessages();
+
+	if ($messages) {
+		foreach($messages as $type => $message)
+		{
+			?>
+			<p class="<?php echo $type; ?>"><?php echo $message; ?></p>
+			<?php
+		}
+	}
+	Ccc::getModel('Core_Message')->clearMessages();
+	Ccc::getModel('Core_Message')->getSession()->destroy();
+
+	?>
+	<style type="text/css">
+		.success{
+			background-color: lightgreen;
+			color: black;
+			font-size: 20px;
+			text-align: center;
+		}
+		.failure{
+			background-color: red;
+			color: white;
+			font-size: 20px;
+			text-align: center;
+		}
+		.notice{
+			background-color: orange;
+			color: white;
+			font-size: 20px;
+			text-align: center;
+		}
+	</style>
+</div>

@@ -1,0 +1,48 @@
+ <?php
+
+$media = $this->getMedia();
+$productId = Ccc::getRegistry('product_id');
+// print_r($productId);
+// print_r($media);
+
+?>
+<form action="<?php echo $this->getUrl('save','product_media', ['product_id' => $productId ])?>" method="post" enctype="multipart/form-data">
+<div class="d-flex align-items-center justify-content-sm-between">
+		<p class="fw-bolder fs-4">Edit Media</p>
+			<button class="btn btn-dark ms-5">Save</button>
+			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','product_media', [], true);?>">cancel</a></div>
+		</div>
+<table class="table table-striped">
+		<tr>
+			<td>
+				<label>Name</label>
+			</td>
+			<td>
+				<input type="text" name="media[name]" required>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label>Status</label>
+			</td>
+			<td>
+                <select name="media[status]">
+                    <?php foreach($media->getResource()->getStatusOptions() as $key => $value): ?>
+                    <?php $selected = ($key == $media->getStatus()) ? 'selected' : ''; ?>
+                    <option value="<?php echo $key; ?>" <?php echo $selected; ?>> <?php echo $value; ?> </option>
+                    <?php endforeach; ?>
+                </select>
+            </td>
+		</tr>
+		<tr>
+			<td>
+				<label>Image</label>
+			</td>
+			<td>
+				<input type="file" name="media[image]" required>
+			</td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>

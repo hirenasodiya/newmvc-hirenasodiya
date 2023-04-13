@@ -1,0 +1,111 @@
+<?php  
+$product = $this->getProduct();
+
+?>
+<form action="<?php echo $this->getUrl('save','product')?>" method="post">
+<div class="d-flex align-items-center justify-content-sm-between">
+		<p class="fw-bolder fs-4">Edit Product</p>
+			<button class="btn btn-dark ms-5">Save</button>
+			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','product', [], true);?>">cancel</a></div>
+		</div>
+<table class="table table-striped">
+	<tr>
+		<td>
+			<label>Name</label>
+		</td>
+		<td>
+			<input type="text" name="product[name]" value="<?php echo $product->name;?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>SKU</label>
+		</td>
+		<td>
+			<input type="text" name="product[SKU]" value="<?php echo $product->SKU;?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>Cost</label>
+		</td>
+		<td>
+			<input type="text" name="product[cost]" value="<?php echo $product->cost;?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>Price</label>
+		</td>
+		<td>
+			<input type="text" name="product[price]" value="<?php echo $product->price;?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>Quantity</label>
+		</td>
+		<td>
+			<input type="text" name="product[quantity]" value="<?php echo $product->quantity;?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>Description</label>
+		</td>
+		<td>
+			<textarea name="product[description]" ><?php echo $product->description;?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>Status</label>
+		</td>
+		<td>
+			<select name="product[status]" >
+				<?php foreach($product->getResource()->getStatusOptions() as $key => $value): ?>
+				<?php $selected = ($key == $product->getStatus()) ? 'selected' : ''; ?>
+				<option value="<?php echo $key; ?>" <?php echo $selected ;?>> <?php echo $value;?>
+				 </option>
+				<?php endforeach; ?>
+			</select>			
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>Color</label>
+		</td>
+		<td>
+			<select name="product[color]" >
+				<option value="blue" <?php if ($product->color === 'blue'){
+													echo "selected";}
+												?>>Blue
+				</option>
+				<option value="black" <?php if ($product->color === 'black'){
+													echo "selected";}
+												?>>Black
+				</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>Material</label>
+		</td>
+		<td>
+			<select name="product[material]"> 
+				<option value="hard" <?php if ($product->material === 'hard'){
+													echo "selected";}
+												?>>hard
+				</option>
+				<option value="soft" <?php if ($product->material === 'soft'){
+													echo "selected";}
+												?>>soft
+				</option>
+			</select>
+		</td>
+	</tr>
+</table>
+</form>
+</body>
+</html>
