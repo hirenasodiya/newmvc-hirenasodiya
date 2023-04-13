@@ -3,6 +3,10 @@ $final = $this->getCustomer();
 
 $customer = $final[0];
 $address = $final[1];
+// echo "<pre>";
+// print_r($this);
+// print_r($final);
+// die();
 
 ?>
 <form action="<?php echo $this->getUrl('save','customer');?>" method="post">
@@ -77,14 +81,14 @@ $address = $final[1];
 	</tr>
 </table>	
 <br>
-<p class="fw-bolder fs-4">Edit Address</p>
+<p class="fw-bolder fs-4">Edit Billing Address</p>
 <table class="table table-striped">
 	<tr>
 		<td>
 			<label>address</label>
 		</td>
 		<td>
-			<input type="text" name="address[address]" value="<?php echo $address->address;?>">
+			<input type="text" name="address[billing][address]" value="<?php echo $address->address;?>">
 		</td>
 	</tr>
 	<tr>
@@ -92,7 +96,7 @@ $address = $final[1];
 			<label>city</label>
 		</td>
 		<td>
-			<input type="text" name="address[city]" value="<?php echo $address->city; ?>">
+			<input type="text" name="address[billing][city]" value="<?php echo $address->city; ?>">
 		</td>
 	</tr>
 	<tr>
@@ -100,7 +104,7 @@ $address = $final[1];
 			<label>state</label>
 		</td>
 		<td>
-			<input type="text" name="address[state]" value="<?php echo $address->state; ?>">
+			<input type="text" name="address[billing][state]" value="<?php echo $address->state; ?>">
 		</td>
 	</tr>
 	<tr>
@@ -108,7 +112,7 @@ $address = $final[1];
 			<label>country</label>
 		</td>
 		<td>
-			<input type="text" name="address[country]" value="<?php echo $address->country; ?>">
+			<input type="text" name="address[billing][country]" value="<?php echo $address->country; ?>">
 		</td>
 	</tr>
    	<tr>
@@ -116,7 +120,50 @@ $address = $final[1];
 			<label>zipcode</label>
 		</td>
 		<td>
-			<input type="text" name="address[zipcode]" value="<?php echo $address->zipcode; ?>">
+			<input type="text" name="address[billing][zipcode]" value="<?php echo $address->zipcode; ?>">
+		</td>
+	</tr>
+</table>
+<p class="fw-bolder fs-4">Edit Shipping Address</p>
+<table class="table table-striped">
+	<tr>
+		<td>
+			<label>address</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][address]" value="<?php echo $address->address;?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>city</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][city]" value="<?php echo $address->city; ?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>state</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][state]" value="<?php echo $address->state; ?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>country</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][country]" value="<?php echo $address->country; ?>">
+		</td>
+	</tr>
+   	<tr>
+		<td>
+			<label>zipcode</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][zipcode]" value="<?php echo $address->zipcode; ?>">
 		</td>
 	</tr>
 

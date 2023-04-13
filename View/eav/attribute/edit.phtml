@@ -1,5 +1,11 @@
 <?php
 $attribute = $this->getAttribute();
+$attributeOptions = $this->getAttributeOption();
+
+
+// echo "<pre>";
+// print_r($attributeOptions);
+
 ?>
 <form action="<?php echo $this->getUrl('save', 'eav_attribute', ['attribute_id' => $attribute->getId()]) ?>" method="post">
 	<div class="d-flex align-items-center justify-content-sm-between">
@@ -9,6 +15,13 @@ $attribute = $this->getAttribute();
 		</div>
 <table class="table table-striped">
     		<thead>
+                <tr>
+                    <td>entity_type_id</td>
+                    <td>
+                        <input type="text" name="attribute[entity_type_id]" value="<?php echo $attribute->entity_type_id; ?>" required>
+                    </td>
+                    <td></td>
+                </tr>
     			<tr>
     				<td>Code</td>
     				<td>
@@ -51,18 +64,14 @@ $attribute = $this->getAttribute();
                                     </tr>
                                 </thead>
                                 <tbody id="inputTypeOptionTable">
+                                    <tbody id="inputTypeOptionTable">
+                                    <?php foreach($attributeOptions as $attributeOption) : ?>
                                     <tr>
-                                        <td><input type="text" name="option[exist][]" /></td>
+                                        <td><input type="text" name="option[exist][<?php echo $attributeOption->option_id; ?>]" value="<?php echo $attributeOption->name; ?>"/></td>
                                         <td><input type="button" name="remove" value="REMOVE 1" class="removeOption" ></td>
                                     </tr>
-                                    <tr>
-                                        <td><input type="text" name="option[exist][]" /></td>
-                                        <td><input type="button" name="remove" value="REMOVE 2" class="removeOption" ></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" name="option[exist][]" /></td>
-                                        <td><input type="button" name="remove" value="REMOVE 3" class="removeOption" ></td>
-                                    </tr>
+                                    <?php endforeach; ?>
+                                     </tbody>
                                 </tbody>
                             </table>
                         </div>
@@ -90,7 +99,7 @@ $attribute = $this->getAttribute();
                 <tr>
                     <td>backend_model</td>
                     <td>
-                        <input type="text" name="attribute[backend_model]" value="<?php echo $attribute->backend_model; ?>" required>
+                        <input type="text" name="attribute[backend_model]" value="<?php echo $attribute->backend_model; ?>">
                     </td>
                     <td></td>
                 </tr>

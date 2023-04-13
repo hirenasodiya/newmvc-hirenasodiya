@@ -17,4 +17,6 @@ class Block_Admin_Grid extends Block_Core_Template
 		$admins = Ccc::getModel('Admin')->fetchAll($sql);
 		return $admins;
 	}
+
+	
 }
