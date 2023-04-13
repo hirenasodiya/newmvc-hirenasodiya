@@ -39,7 +39,7 @@ $attributes = $this->getAttributes()->getData();
 			<td><?php echo $attribute->input_type; ?></td>
 
 			<td><a href="<?php echo $this->getUrl('edit', 'eav_attribute', ['attribute_id' => $attribute->attribute_id]); ?>">Edit</a></td>
-			<td><a href="<?php echo $this->getUrl('delete', 'eav_attribute', ['attribute_id' => $attribute->product_id]); ?>">Delete</a></td>
+			<td><a href="<?php echo $this->getUrl('delete', 'eav_attribute', ['attribute_id' => $attribute->attribute_id]); ?>">Delete</a></td>
 	    </tr>
 		<?php endforeach; ?>
 	<?php endif;?>
