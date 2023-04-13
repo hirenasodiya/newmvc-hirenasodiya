@@ -26,7 +26,8 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+
 		}
 	}
 
@@ -45,7 +46,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
 	}
 
@@ -131,7 +132,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			$this->getView()->getMessage()->addMessages('Attribute data saved Successfully.');
 
 		} catch (Exception $e) {
-			$this->getView()->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
 		$this->redirect('grid', null, [], true);
 	}

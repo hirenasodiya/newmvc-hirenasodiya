@@ -1,6 +1,6 @@
 <?php
 $attribute = $this->getAttribute();
-$attributeOptions = $this->getAttributeOption()->getData();
+$attributeOptions = $this->getAttributeOption();
 
 
 // echo "<pre>";
@@ -99,7 +99,7 @@ $attributeOptions = $this->getAttributeOption()->getData();
                 <tr>
                     <td>backend_model</td>
                     <td>
-                        <input type="text" name="attribute[backend_model]" value="<?php echo $attribute->backend_model; ?>" required>
+                        <input type="text" name="attribute[backend_model]" value="<?php echo $attribute->backend_model; ?>">
                     </td>
                     <td></td>
                 </tr>
