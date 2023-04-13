@@ -1,13 +1,38 @@
 <?php
 
-class Controller_Product extends Controller_Core_Action
+class Controller_Item extends Controller_Core_Action
 {
 	public function gridAction()
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Product_Grid();
-			$layout->getChild('content')->addChild('grid',$grid);
+			$grid = new Block_Item_Grid();
+			$items = $grid->getItems();
+			$layout->getChild('content')->addChild('grid', $grid);
+			$layout->render();
+
+		} catch (Exception $e) {
+			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+		}
+	}
+
+	public function editAction()
+	{
+		try {
+			Ccc::getModel('Core_Session')->start();
+			$itemId = (int) Ccc::getModel('Core_Request')->getParam('entity_id');
+			if (!$itemId) {
+				throw new Exception("Invalid ID", 1);
+			}
+			$layout = $this->getLayout();
+			$item = Ccc::getModel('Item')->load($itemId);
+
+			if (!$item) {
+				throw new Exception("Invalid Request", 1);
+			}
+
+			$edit = $layout->createBlock('item_Edit')->setData(['item'=>$item]);
+			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 
 		} catch (Exception $e) {
@@ -20,38 +45,14 @@ class Controller_Product extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$product = Ccc::getModel('Product');
-			$edit = $layout->createBlock('Product_Edit')->setData(['product'=>$product]);
+			$item = Ccc::getModel('item');
+			$edit = $layout->createBlock('item_Edit')->setData(['item'=>$item]);
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
 			$this->redirect('grid');
-		}
-	}
-
-	public function editAction()
-	{
-		try {
-			$productId = (int) Ccc::getModel('Core_Request')->getParam('product_id');
-			if (!$productId) {
-				throw new Exception("Invalid ID", 1);
-			}
-			$layout = $this->getLayout();
-			$product = Ccc::getModel('Product')->load($productId);
-
-			if (!$product) {
-				throw new Exception("Invalid Request", 1);
-			}
-
-			$edit = $layout->createBlock('Product_Edit')->setData(['product'=>$product]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
-
-		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid','',[],true);
 		}
 	}
 
@@ -63,25 +64,25 @@ class Controller_Product extends Controller_Core_Action
 				throw new Exception("Invalid request", 1);
 			}
 
-			$products = Ccc::getModel('Core_Request')->getPost('product');
-			if (!$products) {
+			$items = Ccc::getModel('Core_Request')->getPost('item');
+			if (!$items) {
 				throw new Exception("Invalid data", 1);
 			}
 
-			$productId = Ccc::getModel('Core_Request')->getParam('product_id');
-			if ($productId) {
-				$product = Ccc::getModel('Product')->load($productId);
-				if (!$product) {
-					throw new Exception("Invalid product data", 1);
+			$itemId = Ccc::getModel('Core_Request')->getParam('entity_id');
+			if ($itemId) {
+				$item = Ccc::getModel('item')->load($itemId);
+				if (!$item) {
+					throw new Exception("Invalid item data", 1);
 				}
-				$product->updated_at = date('Y-m-d h-i-sA');
+				$item->updated_at = date('Y-m-d h-i-sA');
 			}
 			else
 			{
-				$product = Ccc::getModel('Product');
-				$product->created_at = date('Y-m-d h-i-sA');
+				$item = Ccc::getModel('item');
+				$item->created_at = date('Y-m-d h-i-sA');
 			}
-			$result = $product->setData($products);
+			$result = $item->setData($items);
 			$final = $result->save();
 			if (!$final) {
 				throw new Exception("Data not saved", 1);
@@ -93,16 +94,17 @@ class Controller_Product extends Controller_Core_Action
 			$this->redirect('grid', null);
 		
 	}
+
 	public function deleteAction()
 	{
 		try {
 			Ccc::getModel('Core_Session')->start();
-			$id =  Ccc::getModel('Core_Request')->getParam('product_id');
+			$id =  Ccc::getModel('Core_Request')->getParam('entity_id');
 			if (!$id) {
 				throw new Exception("Id not found", 1);
 			}
-			$product = Ccc::getModel('Product')->load($id);
-			$result = $product->delete();
+			$item = Ccc::getModel('item')->load($id);
+			$result = $item->delete();
 			if(!$result)
 			{
 				throw new Exception("Deletion failed", 1);
@@ -116,4 +118,3 @@ class Controller_Product extends Controller_Core_Action
 		$this->redirect('grid',null,[],true);
 	}
 }
-
