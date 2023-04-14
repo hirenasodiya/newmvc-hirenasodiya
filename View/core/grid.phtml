@@ -1,0 +1,36 @@
+<?php  
+$rows = $this->getCollection();
+?>
+<div class="d-flex align-items-center justify-content-sm-between">
+	<p class="fw-bolder fs-4"><?php echo $this->getTitle(); ?></p>
+	
+	<div class="m-2 mx-2">
+		<?php foreach($this->getButtons() as $key => $button):  ?>
+		<a class="btn btn-dark pull-right" href="<?php echo $button['url']; ?>"><?php echo $button['title']; ?></a>
+		<?php endforeach; ?>
+	</div>
+	
+</div>
+<table class="table table-striped text-center ">
+		<tr>
+			<?php foreach($this->getColumns() as $key => $column):  ?>
+			<th><?php echo $column['title']; ?></th>
+			<?php endforeach; ?>
+			<?php foreach($this->getActions() as $key => $action):  ?>
+			<th><?php echo $action['title']; ?></th>
+			<?php endforeach; ?>
+		</tr>
+		<?php foreach($rows->getData() as $row):?>
+			<tr>
+				<?php foreach($this->getColumns() as $key => $column):  ?>
+				<td><?php echo $this->getColumnValue($row, $key);?></td>
+				<?php endforeach; ?>
+
+				<?php foreach($this->getActions() as $key => $action):  ?>
+				<td><a href="<?php $method = $action['method']; echo $this->$method($row, $key); ?>"><?php echo $action['title']; ?></a></td>
+				<?php endforeach; ?>
+			</tr>
+		<?php endforeach; ?>
+	</table>
+</body>
+</html>

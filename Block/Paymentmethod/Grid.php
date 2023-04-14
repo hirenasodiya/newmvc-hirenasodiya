@@ -1,48 +1,14 @@
 <?php
 
-class Block_Paymentmethod_Grid extends Block_Core_Template
+class Block_Paymentmethod_Grid extends Block_Core_Grid
 {
-	protected $columns = [];
-	protected $action = [];
-
 	public function __construct()
 	{
 		parent::__construct();
-		$this->setTemplate('paymentmethod/grid.phtml');
+		$this->setTitle('Manage Paymentmethod');
 	}
 
-	public function getColumns()
-	{
-		return $this->columns;
-	}
-
-	public function setColumns(array $columns)
-	{
-		$this->columns = $columns;
-		return $this;
-	}
-
-	public function addColumn($key, $value)
-	{
-		$this->columns[$key] = $value;
-		return $this;
-	}
-
-	public function removeColumn($key)
-	{
-		unset($this->columns[$key]);
-		return $this;
-	}
-
-	public function getColumn($key)
-	{
-		if (array_key_exists($key, $this->columns)) {
-			return $this->columns[$key];
-		}
-		return null;
-	}
-
-	public function prepareColumn()
+	protected function _prepareColumns()
 	{
 		$this->addColumn('payment_method_id',[
 			'title' => 'Paymentmethod id',
@@ -53,15 +19,40 @@ class Block_Paymentmethod_Grid extends Block_Core_Template
 		$this->addColumn('status',[
 			'title' => 'Status',
 		]);
-		$this->addColumn('created_id',[
+		$this->addColumn('created_at',[
 			'title' => 'Created_at',
 		]);
-		$this->addColumn('updated_id',[
+		$this->addColumn('updated_at',[
 			'title' => 'Updated_at',
 		]);
+
+		return parent::_prepareColumns();
 	}
 
-	public function getPaymentmethods()
+	protected function _prepareActions()
+	{
+		$this->addAction('edit',[
+			'title' => 'Edit',
+			'method' => 'getEditUrl' 
+		]);
+		$this->addAction('delete',[
+			'title' => 'Delete',
+			'method' => 'getDeleteUrl'
+		]);
+		
+		return parent::_prepareActions();
+	}
+
+	protected function _preparebuttons()
+	{
+		$this->addButton('payment_method_id',[
+			'title' => 'Add New',
+			'url' => $this->getUrl('add')
+		]);
+		return parent::_prepareButtons();
+	}
+
+	public function getCollection()
 	{
 		$query = "SELECT * FROM `payment_method`";
 		$paymentMethods = Ccc::getModel('Paymentmethod')->fetchAll($query);
