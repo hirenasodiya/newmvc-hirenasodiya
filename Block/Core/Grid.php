@@ -89,16 +89,6 @@ class Block_Core_Grid extends Block_Core_Template
 		return $this;
 	}
 
-	public function getEditUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['payment_method_id' => $row->getId()], true);
-	}
-
-	public function getDeleteUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['payment_method_id' => $row->getId()], true);
-	}
-
 	public function getColumnValue($row, $key)
 	{
 		if ($key == 'status') {
@@ -153,9 +143,6 @@ class Block_Core_Grid extends Block_Core_Template
 	{
 		return $this->_title;
 	}
-
-
-
 }
 
 

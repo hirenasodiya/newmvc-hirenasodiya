@@ -3,13 +3,78 @@
 /**
  * 
  */
-class Block_Customer_Grid extends Block_Core_Template
+class Block_Customer_Grid extends Block_Core_Grid
 {
-	
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
-		$this->setTemplate('customer/grid.phtml');
+		$this->setTitle('Manage customer');
+	}
+
+	protected function _prepareColumns()
+	{
+		$this->addColumn('customer_id',[
+			'title' => 'customer Id',
+		]);
+		$this->addColumn('first_name',[
+			'title' => 'First name',
+		]);
+		$this->addColumn('last_name',[
+			'title' => 'Last name',
+		]);
+		$this->addColumn('email',[
+			'title' => 'Email',
+		]);
+		$this->addColumn('gender',[
+			'title' => 'gender',
+		]);
+		$this->addColumn('mobile',[
+			'title' => 'Mobile',
+		]);
+		$this->addColumn('status',[
+			'title' => 'Status',
+		]);
+		$this->addColumn('created_at',[
+			'title' => 'Created_at',
+		]);
+		$this->addColumn('updated_at',[
+			'title' => 'Updated_at',
+		]);
+
+		return parent::_prepareColumns();
+	}
+
+	protected function _prepareActions()
+	{
+		$this->addAction('edit',[
+			'title' => 'Edit',
+			'method' => 'getEditUrl' 
+		]);
+		$this->addAction('delete',[
+			'title' => 'Delete',
+			'method' => 'getDeleteUrl'
+		]);
+		
+		return parent::_prepareActions();
+	}
+
+	protected function _preparebuttons()
+	{
+		$this->addButton('customer',[
+			'title' => 'Add New',
+			'url' => $this->getUrl('add')
+		]);
+		return parent::_prepareButtons();
+	}
+
+	public function getEditUrl($row, $key)
+	{
+		return  $this->getUrl($key, null , ['customer_id' => $row->getId()], true);
+	}
+
+	public function getDeleteUrl($row, $key)
+	{
+		return  $this->getUrl($key, null , ['customer_id' => $row->getId()], true);
 	}
 
 	public function getCollection()

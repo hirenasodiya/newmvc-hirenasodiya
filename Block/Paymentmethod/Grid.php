@@ -52,6 +52,16 @@ class Block_Paymentmethod_Grid extends Block_Core_Grid
 		return parent::_prepareButtons();
 	}
 
+	public function getEditUrl($row, $key)
+	{
+		return  $this->getUrl($key, null , ['payment_method_id' => $row->getId()], true);
+	}
+
+	public function getDeleteUrl($row, $key)
+	{
+		return  $this->getUrl($key, null , ['payment_method_id' => $row->getId()], true);
+	}
+
 	public function getCollection()
 	{
 		$query = "SELECT * FROM `payment_method`";
