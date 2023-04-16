@@ -89,6 +89,9 @@ class Block_Core_Grid extends Block_Core_Template
 		return $this;
 	}
 
+	
+
+
 	public function getColumnValue($row, $key)
 	{
 		if ($key == 'status') {
@@ -143,6 +146,10 @@ class Block_Core_Grid extends Block_Core_Template
 	{
 		return $this->_title;
 	}
+
+
+
+
 }
 
 
