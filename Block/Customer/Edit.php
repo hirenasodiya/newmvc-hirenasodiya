@@ -15,35 +15,44 @@ class Block_Customer_Edit extends Block_Core_Template
 	public function getCustomer()
 	{
 		$customer = $this->getData('customer');
-		$address = $this->getData('address');
-		// echo "<pre>";
-		// print_r($billing);
-		// die();
-		$final = [$customer, $address];
+
+		$billingAddress = $this->getData('billingAddress');
+		$shippingAddress = $this->getData('shippingAddress');
+
+		$final = [$customer, $billingAddress, $shippingAddress];
 		return $final;
 	}
 
-	public function getBilling()
+	public function getBillingAddress()
     {
-        $address = Ccc::getModel('Customer_Address');
-        $sql = "SELECT * FROM `{$address->getResourceName()}` WHERE `{$address->getPrimaryKey()}` = '{$this->billing_address_id}'";
-        $billing = $address->fetchAll($sql);
-        return $billing;
+		$billingAddressId = $this->getData('customer')->billing_address_id;
+        if (!$billingAddressId) {
+			return Ccc::getModel('Customer_Address');
+		}
+
+		$address = Ccc::getModel('Customer_Address');
+        $sql = "SELECT * FROM `{$address->getResourceName()}` WHERE `{$address->getPrimaryKey()}` = '{$billingAddressId}'";
+        $billingAddress = $address->fetchRow($sql);
+        return $billingAddress;
     }
 
-    public function getShipping()
+    public function getShippingAddress()
     {
+		$shippingAddressId = $this->getData('customer')->shipping_address_id;
+		if (!$shippingAddressId) {
+			return Ccc::getModel('Customer_Address');
+		}
         $address = Ccc::getModel('Customer_Address');
-        $sql = "SELECT * FROM `{$address->getResourceName()}` WHERE `{$address->getPrimaryKey()}` = '{$this->shipping_address_id}'";
-        $shipping = $address->fetchAll($sql);
-        return $shipping;
+        $sql = "SELECT * FROM `{$address->getResourceName()}` WHERE `{$address->getPrimaryKey()}` = '{$shippingAddressId}'";
+        $shippingAddress = $address->fetchRow($sql);
+        return $shippingAddress;
     }
 
     public function getAddresses()
     {
         $address = Ccc::getModel('Customer_Address');
         $sql = "SELECT * FROM `{$address->getResourceName()}` WHERE `{$address->getPrimaryKey()}` = '{$this->customer_id}'";
-        $billing = $address->fetchAll($sql);
-        return $billing;
+        $customerAddress = $address->fetchRow($sql);
+        return $customerAddress;
     }
 }

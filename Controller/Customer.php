@@ -2,14 +2,6 @@
 
 class Controller_Customer extends Controller_Core_Action
 {
-	public function testAction()
-	{
-		// $customerId = 2;
-			// $billing = Ccc::getModel('Customer')->load($customerId)->getBilling();
-
-		// echo "<pre>";
-	}
-	
 	public function gridAction()
 	{
 		try {
@@ -29,24 +21,23 @@ class Controller_Customer extends Controller_Core_Action
 		try {
 			$layout = $this->getLayout();
 			$customer = Ccc::getModel('customer');
-			$address = Ccc::getModel('customer_Address');
-			$edit = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'address' => $address]);
+			$billingAddress = Ccc::getModel('Customer_Address');
+			$shippingAddress = Ccc::getModel('Customer_Address');
+
+			$edit = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'billingAddress' => $billingAddress, 'shippingAddress' => $shippingAddress]);
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid');
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
 	}
 
 	public function editAction()
 	{
 		try {
+			Ccc::getModel('Core_Session')->start();
 			$customerId = (int) Ccc::getModel('Core_Request')->getParam('customer_id');
-			// echo "<pre>";
-			// print_r($billing);
-			// die();
 			if (!$customerId) {
 				throw new Exception("Invalid ID", 1);
 			}
@@ -56,17 +47,22 @@ class Controller_Customer extends Controller_Core_Action
 			if (!$customer) {
 				throw new Exception("Data not found", 1);
 			}
-			// $billing = Ccc::getModel('Customer')->load($customerId)->getBilling();
-			$address = Ccc::getModel('Customer_Address')->load($customerId);
-			if (!$address) {
+
+			$billingAddress = Ccc::getModel('Customer_Address')->load($customer->billing_address_id);
+			if (!$billingAddress) {
 				throw new Exception("Data not found", 1);
 			}
-			$edit = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'address' => $address]);
+
+			$shippingAddress = Ccc::getModel('Customer_Address')->load($customer->shipping_address_id);
+			if (!$shippingAddress) {
+				throw new Exception("Data not found", 1);
+			}
+
+			$edit = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'billingAddress' => $billingAddress, 'shippingAddress' => $shippingAddress]);
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid','',[],true);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
 	}
 
@@ -74,12 +70,34 @@ class Controller_Customer extends Controller_Core_Action
 	{
 		try {
 			Ccc::getModel('Core_Session')->start();
-			$postData = Ccc::getModel('Core_Request')->isPost();
-			if (!$postData) {
+			if (!Ccc::getModel('Core_Request')->isPost()) {
 				throw new Exception("Invalid request.", 1);
 			}
 			
-			$customerPost = Ccc::getModel('Core_Request')->getPost();
+			$customer = $this->_saveCustomer();
+			$billingAddress = $this->_saveBillingAddress($customer);
+			$shippingAddress = $this->_saveShippingAddress($customer);
+			
+			$customer->billing_address_id = $billingAddress->address_id;
+			$customer->shipping_address_id = $shippingAddress->address_id;
+
+			unset($customer->updated_at);
+			$final = $customer->save(); 
+			if (!$final) {
+				throw new Exception("Data not found.", 1);
+			}
+
+			$this->getView()->getMessage()->addMessages('Customer data saved Successfully.');
+		} catch (Exception $e) {
+			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
+		}
+		$this->redirect('grid', null, [], true);
+	}
+
+	public function _saveCustomer()
+	{
+		try {
+			$customerPost = Ccc::getModel('Core_Request')->getPost('customer');
 			if (!$customerPost) {
 				throw new Exception("Data not found.", 1);
 			}
@@ -95,68 +113,108 @@ class Controller_Customer extends Controller_Core_Action
 				$customer = Ccc::getModel('Customer');
 				$customer->created_at = date('Y-m-d h-i-sA');
 			}
+			$customer->setData($customerPost);
 
-			$customer->setData($customerPost['customer']);
 			if (!$customer->save()) {
-				throw new Exception("Data not saved.", 1);
+					throw new Exception("Data not saved.", 1);
+				}else{
+					return $customer;
+				}
+
+			} catch (Exception $e) {
+				Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
+			}		
+	}
+
+	public function _saveBillingAddress($customer)
+	{
+		try {
+			$billingPost = Ccc::getModel('Core_Request')->getPost('billingAddress');
+			if (!$billingPost) {
+				throw new Exception("Biiling data not found.", 1);
+			}
+
+
+			$billingAddress = $customer->getBillingAddress();
+			if (!$billingAddress) {
+				$billingAddress = Ccc::getModel('Customer_Address');
+				$billingAddress->customer_id = $customer->customer_id;
+			}
+
+			$billingAddress->setData($billingPost);
+			if (!$billingAddress->save()) {
+				throw new Exception("Billing Address not saved.", 1);
+			} else {
+				return $billingAddress;
 			}
 			
-			$addressPost = Ccc::getModel('Core_Request')->getPost();
-			// echo "<pre>";
-			// print_r($addressPost['address']);
-			// die();
-			foreach ($addressPost['address'] as $key => $value) {
-				$customerId = (int) Ccc::getModel('Core_Request')->getParam('customer_id');
-				if ($customerId) {
-					// $address = Ccc::getModel('Customer_Address')->load($customerId);
-					if (!$address) {
-						throw new Exception("Data not found.", 1);
-					}
-					$address->address_id = $customer->customer_id;
-				} else {
-					$address = Ccc::getModel('Customer_Address');
-					$address->customer_id = $customer->customer_id;
-				}
-
-				$address->setData($addressPost);
-
-				if (!$address->save()) {
-					throw new Exception("Data not saved.", 1);
-				}
-			}
-
-			$this->getMessage()->addMessages('Data saved successfully.');
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
 		}
-			// $this->redirect('grid', null, [], true);
 	}
+
+	public function _saveShippingAddress($customer)
+	{
+		try {
+			$shippingPost = Ccc::getModel('Core_Request')->getPost('shippingAddress');
+			// echo "<pre>";
+			// print_r($shippingPost);
+			if (!$shippingPost) {
+				throw new Exception("Data not found.", 1);
+			}
+
+			$shippingAddress = $customer->getShippingAddress();
+			if (!$shippingAddress) {
+				$shippingAddress = Ccc::getModel('Customer_Address');
+				$shippingAddress->customer_id = $customer->customer_id;
+			}
+
+			$shippingAddress->setData($shippingPost);
+			if (!$shippingAddress->save()) {
+				throw new Exception("Shipping Address Data not saved.", 1);
+			} else {
+				return $shippingAddress;
+			}
+			
+		} catch (Exception $e) {
+			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
+			
+		}
+	}
+
 
 	public function deleteAction()
 	{
 		try {
 			Ccc::getModel('Core_Session')->start();
-			$customerId = Ccc::getModel('Core_Request')->getParam('customer_id');
+			$customerId = Ccc::getModel('Core_Request')->getParam('id');
+			echo "<pre>";
 			if (!$customerId) {
-				throw new Exception("Invalid id.", 1);
+				throw new Exception("ID not found.", 1);
 			}
+
 			$customer = Ccc::getModel('Customer')->load($customerId);
 			$result = $customer->delete();
+			print_r($result);
 			if (!$result) {
-				throw new Exception("Data not deleted", 1);
+				throw new Exception("Customer data not deleted.", 1);
 			}
 
 			$address = Ccc::getModel('Customer_Address')->load($customerId);
 			$result = $address->delete();
+			print_r($result);
+			die;
 			if (!$result) {
-				throw new Exception("Address not deleted", 1);
+				throw new Exception("Address data not deleted.", 1);
 			} else {
-				$this->getMessage()->addMessages('Data deleted successfully.');
+				$this->getView()->getMessage()->addMessages('Customer data deleted Successfully.');
 			}
+			
 		} catch (Exception $e) {
-			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
+			$this->getView()->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-		$this->redirect('grid', null, [], true);
+		
+		// $this->redirect('grid', null, [], true);
 	}
 }
 
