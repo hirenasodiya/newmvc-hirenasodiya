@@ -2,10 +2,10 @@
 
 class Block_Product_Grid extends Block_Core_Grid
 {
-public function __construct()
+	public function __construct()
 	{
 		parent::__construct();
-		$this->setTitle('Manage product');
+		$this->setTitle('Manage Product');
 	}
 
 	protected function _prepareColumns()
@@ -87,6 +87,7 @@ public function __construct()
 	{
 		return  $this->getUrl($key, null , ['product_id' => $row->getId()], true);
 	}
+
 	public function getCollection()
 	{
 		$query = "SELECT * FROM `product` WHERE 1";
