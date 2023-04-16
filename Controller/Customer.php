@@ -9,6 +9,7 @@ class Controller_Customer extends Controller_Core_Action
 
 		// echo "<pre>";
 	}
+	
 	public function gridAction()
 	{
 		try {
