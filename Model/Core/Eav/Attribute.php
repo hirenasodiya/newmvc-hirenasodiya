@@ -1,9 +1,9 @@
 <?php
 
-class Model_Eav_Attribute_Option extends Model_Core_Table
+class Model_Core_Eav_Attribute extends Model_Core_Table
 {
-	protected $resourceClass = 'Model_Eav_Attribute_Option_Resource';
-    protected $collectionClass = 'Model_Eav_Attribute_Option_Collection';
+	protected $resourceClass = 'Model_Core_Eav_Attribute_Resource';
+    protected $collectionClass = 'Model_Core_Eav_Attribute_Collection';
 
     public function getStatus()
     {
@@ -11,7 +11,7 @@ class Model_Eav_Attribute_Option extends Model_Core_Table
             return $this->status;
         }
 
-        return Model_Eav_Attribute_Option_Resource::STATUS_DEFAULT;
+        return Model_Core_Eav_Attribute_Resource::STATUS_DEFAULT;
     }
     
     public function getStatusText()
@@ -22,7 +22,7 @@ class Model_Eav_Attribute_Option extends Model_Core_Table
             return $statuses[$this->status];
         }
 
-        return $statuses[Model_Eav_Attribute_Option_Resource::STATUS_DEFAULT];
+        return $statuses[Model_Core_Eav_Attribute_Resource::STATUS_DEFAULT];
     }
 }
 

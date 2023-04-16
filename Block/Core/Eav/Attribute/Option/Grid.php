@@ -3,7 +3,7 @@
 /**
  * 
  */
-class Block_Eav_Attribute_Option_Grid extends Block_Core_Template
+class Block_Core_Eav_Attribute_Option_Grid extends Block_Core_Template
 {
 	
 	function __construct()

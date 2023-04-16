@@ -8,7 +8,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Eav_Attribute_Grid();
+			$grid = $layout->createBlock('Core_Eav_Attribute_Grid');
 			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 
@@ -21,8 +21,8 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$EavAttribute = Ccc::getModel('Eav_Attribute');
-			$edit = $layout->createBlock('Eav_Attribute_Edit')->setData(['attribute'=>$EavAttribute]);
+			$EavAttribute = Ccc::getModel('Core_Eav_Attribute');
+			$edit = $layout->createBlock('Core_Eav_Attribute_Edit')->setData(['attribute'=>$EavAttribute]);
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 		} catch (Exception $e) {
@@ -36,13 +36,13 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 		try {
 			$attributeId = (int) Ccc::getModel('Core_Request')->getParam('attribute_id');
 			$layout = $this->getLayout();
-			$attribute = Ccc::getModel('Eav_attribute')->load($attributeId);
+			$attribute = Ccc::getModel('Core_Eav_attribute')->load($attributeId);
 			// echo "<pre>";
 			// print_r($attribute);
 			// die();	
 
-			$EavAttribute = Ccc::getModel('Eav_Attribute');
-			$edit = $layout->createBlock('Eav_Attribute_Edit')->setData(['attribute'=>$attribute]);
+			$EavAttribute = Ccc::getModel('Core_Eav_Attribute');
+			$edit = $layout->createBlock('Core_Eav_Attribute_Edit')->setData(['attribute'=>$attribute]);
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 		} catch (Exception $e) {
@@ -65,14 +65,14 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 
 			$attributeId = Ccc::getModel('Core_Request')->getParam('attribute_id');
 			if ($attributeId) {
-				$attribute = Ccc::getModel('Eav_Attribute')->load($attributeId);
+				$attribute = Ccc::getModel('Core_Eav_Attribute')->load($attributeId);
 				if (!$attribute) {
 					throw new Exception("Invalid attribute data", 1);
 				}
 			}
 			else
 			{
-				$attribute = Ccc::getModel('Eav_attribute');
+				$attribute = Ccc::getModel('Core_Eav_attribute');
 			}
 			$attribute->setData($attributes['attribute']);
 			if (!$attribute->save()) {
@@ -124,7 +124,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 				throw new Exception("ID not found.", 1);
 			}
 
-			$attribute = Ccc::getModel('Eav_Attribute'); 
+			$attribute = Ccc::getModel('Core_Eav_Attribute'); 
 			$result = $attribute->load($attributeId)->delete();
 			if (!$result) {
 				throw new Exception("Attribute data not deleted successfully.", 1);
