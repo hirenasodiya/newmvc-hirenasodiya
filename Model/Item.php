@@ -24,6 +24,13 @@ class Model_Item extends Model_Core_Table
 
         return $statuses[Model_Item_Resource::STATUS_DEFAULT];
     }
+
+    public function getAttributes()
+    {
+        $sql = "SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 6 AND `status` = 1 ";
+        $attributes = Ccc::getModel('Core_Eav_Attribute')->fetchAll($sql);
+        return $attributes->getData();
+    }
 }
 
 ?>

@@ -24,13 +24,17 @@ class Block_Core_Eav_Attribute_Edit extends Block_Core_Template
 		$attributeId = Ccc::getModel('Core_Request')->getParam('attribute_id');
 		if (!$attributeId) {
 			return Ccc::getModel('Core_Eav_Attribute_Option');
-		// echo "<pre>";
-		// print_r($attributeOption);
-		// die();
 		}
 		
 		$sql = "SELECT * FROM `eav_attribute_option` WHERE `attribute_id` = $attributeId";
 		$attributeOption = Ccc::getModel('Core_Eav_Attribute_Option')->fetchAll($sql);
 		return $attributeOption->getData();
+	}
+
+	public function getEntityType()
+	{
+		$sql = "SELECT * FROM `entity_type`";
+		$typeData = Ccc::getModel('Core_Eav_Attribute_Option')->fetchAll($sql);
+		return $typeData;
 	}
 }

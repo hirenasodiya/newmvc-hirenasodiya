@@ -14,7 +14,7 @@ class Block_Core_Eav_Attribute_Grid extends Block_Core_Template
 
 	public function getAttributes()
 	{
-		$sql = "SELECT * FROM `eav_attribute`";
+		$sql = "SELECT * FROM `eav_attribute` ";
 		$attributes = Ccc::getModel('Core_Eav_Attribute')->fetchAll($sql);
 		return $attributes;
 	}

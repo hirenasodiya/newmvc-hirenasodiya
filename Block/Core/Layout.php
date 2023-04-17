@@ -43,7 +43,8 @@ class Block_Core_Layout extends Block_Core_Template
     {
         $className = 'Block_'.$blockName;
         $block = new $className();
-        $block->setData($this);
+        // $block->setData($this);
+        $block->setLayout($this);
         return $block;
 
     }

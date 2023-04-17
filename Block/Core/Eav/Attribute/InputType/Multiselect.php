@@ -3,16 +3,15 @@
 /**
  * 
  */
-class Block_Core_Eav_Attribute_InputType_Select extends Block_Core_Template
+class Block_Core_Eav_Attribute_InputType_Multiselect extends Block_Core_Template
 {
     protected $_attribute = null;
     protected $_row = null;
-
+    
 	function __construct()
     {
         parent::__construct();
-        $this->setTemplate('core/eav/attribute/inputtype/select.phtml');
-
+        $this->setTemplate('core/eav/attribute/inputtype/multiselect.phtml');
     }
 
     public function setRow($row)
@@ -25,6 +24,7 @@ class Block_Core_Eav_Attribute_InputType_Select extends Block_Core_Template
     {
         return $this->_row;
     }
+
 
     public function setAttribute($attribute)
     {

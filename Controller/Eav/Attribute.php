@@ -81,7 +81,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 				$attributeId = $attribute->attribute_id;
 				if (array_key_exists('exist', $attributes['option'])) {
 					$query = "SELECT * FROM `eav_attribute_option` WHERE `attribute_id` = {$attributeId}";
-					$attributeOptionModel = Ccc::getModel('Eav_Attribute_Option');
+					$attributeOptionModel = Ccc::getModel('Core_Eav_Attribute_Option');
 					$attributeOption = $attributeOptionModel->fetchAll($query);
 					if ($attributeOption) {
 						foreach ($attributeOption->getData() as $row) {
@@ -98,7 +98,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 					foreach ($attributes['option']['new'] as $optionData) {
 						$option['name'] = $optionData;
 						$option['attribute_id'] = $attributeId;
-						$attributeOption = Ccc::getModel('Eav_Attribute_Option');
+						$attributeOption = Ccc::getModel('Core_Eav_Attribute_Option');
 						$attributeOption->setData($option);
 						$attributeOption->save();
 						unset($option);

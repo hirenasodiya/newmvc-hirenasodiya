@@ -64,7 +64,38 @@ class Controller_Item extends Controller_Core_Action
 				throw new Exception("Invalid request", 1);
 			}
 
-			$items = Ccc::getModel('Core_Request')->getPost('item');
+			$itemPost = Ccc::getModel('Core_Request')->getPost('item');
+			$item = Ccc::getModel('item');
+			$item->setData($itemPost);
+			$item->save();
+
+			$attributePost = Ccc::getModel('Core_Request')->getPost('attribute');
+
+			foreach ($attributePost as $backedType => $value) {
+				foreach ($value as $attributeId => $v) {
+					if (is_array($v)) {
+						$v = implode(",", $v);
+					}
+
+					$model = Ccc::getModel('Core_table');
+					$resource = $model->getResource()->setResourceName("item_{$backedType}")->setPrimaryKey('value_id');
+
+					$model->entity_id = $item->getId();
+					$model->attribute_id = $attributeId;
+					$model->value = $v;
+					$model->save();
+				}
+			}
+
+
+
+
+
+
+
+			die();
+			// echo "<pre>";
+			// print_r($items);
 			if (!$items) {
 				throw new Exception("Invalid data", 1);
 			}
@@ -91,7 +122,7 @@ class Controller_Item extends Controller_Core_Action
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-			$this->redirect('grid', null);
+			// $this->redirect('grid', null);
 		
 	}
 
