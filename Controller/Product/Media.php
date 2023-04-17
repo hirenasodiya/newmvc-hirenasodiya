@@ -98,6 +98,10 @@ class Controller_Product_Media extends Controller_Core_Action
 					$this->getView()->getMessage()->addMessages('Product media saved Successfully.');
 				}
 
+				$productPost = Ccc::getModel('Product')->load($productId);
+				$productPost->small = $small['media_id'];
+				$productPost->save();
+
 				$thumbnail['thumbnail'] = 1;
 				$thumbnail['media_id'] = $thumbnailId;
 				$mediaPost->setData($thumbnail);
@@ -107,6 +111,9 @@ class Controller_Product_Media extends Controller_Core_Action
 					$this->getView()->getMessage()->addMessages('Product media saved Successfully.');
 				}
 
+				$productPost->thumbnail = $thumbnail['media_id'];
+				$productPost->save();
+
 				$base['base'] = 1;
 				$base['media_id'] = $baseId;
 				$mediaPost->setData($base);
@@ -115,6 +122,9 @@ class Controller_Product_Media extends Controller_Core_Action
 				if ($productMedia) {
 					$this->getView()->getMessage()->addMessages('Product media saved Successfully.');
 				}
+
+				$productPost->base = $base['media_id'];
+				$productPost->save();
 
 				$gallery['gallery'] = 1;
 				foreach ($galleryId as $key => $value) {
