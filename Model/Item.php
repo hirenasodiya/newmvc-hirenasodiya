@@ -1,9 +1,9 @@
 <?php
 
-class Model_Admin extends Model_Core_Table
+class Model_Item extends Model_Core_Table
 {
-	protected $resourceClass = 'Model_Admin_Resource';
-    protected $collectionClass = 'Model_Admin_Collection';
+	protected $resourceClass = 'Model_Item_Resource';
+    protected $collectionClass = 'Model_Item_Collection';
 
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 2;
@@ -29,6 +29,13 @@ class Model_Admin extends Model_Core_Table
         }
 
         return $statuses[self::STATUS_DEFAULT];
+    }
+
+    public function getAttributes()
+    {
+        $sql = "SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 6 AND `status` = 1 ";
+        $attributes = Ccc::getModel('Core_Eav_Attribute')->fetchAll($sql);
+        return $attributes->getData();
     }
 }
 

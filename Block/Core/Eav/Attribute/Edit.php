@@ -3,13 +3,13 @@
 /**
  * 
  */
-class Block_Eav_Attribute_Edit extends Block_Core_Template
+class Block_Core_Eav_Attribute_Edit extends Block_Core_Template
 {
 	
 	function __construct()
 	{
 		parent::__construct();
-		$this->setTemplate('eav/attribute/edit.phtml');
+		$this->setTemplate('core/eav/attribute/edit.phtml');
 
 	}
 	public function getAttribute()
@@ -23,14 +23,18 @@ class Block_Eav_Attribute_Edit extends Block_Core_Template
 	{
 		$attributeId = Ccc::getModel('Core_Request')->getParam('attribute_id');
 		if (!$attributeId) {
-			return Ccc::getModel('Eav_Attribute_Option');
-		// echo "<pre>";
-		// print_r($attributeOption);
-		// die();
+			return Ccc::getModel('Core_Eav_Attribute_Option');
 		}
 		
 		$sql = "SELECT * FROM `eav_attribute_option` WHERE `attribute_id` = $attributeId";
-		$attributeOption = Ccc::getModel('Eav_Attribute_Option')->fetchAll($sql);
+		$attributeOption = Ccc::getModel('Core_Eav_Attribute_Option')->fetchAll($sql);
 		return $attributeOption->getData();
+	}
+
+	public function getEntityType()
+	{
+		$sql = "SELECT * FROM `entity_type`";
+		$typeData = Ccc::getModel('Core_Eav_Attribute_Option')->fetchAll($sql);
+		return $typeData;
 	}
 }

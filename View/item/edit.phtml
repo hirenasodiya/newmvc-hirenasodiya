@@ -1,0 +1,52 @@
+<?php  
+$item = $this->getItem();
+$attributes = $this->getAttributes();
+// echo "<pre>";
+// print_r($attributes);
+
+?>
+<form action="<?php echo $this->getUrl('save','item')?>" method="post">
+<div class="d-flex align-items-center justify-content-sm-between">
+		<p class="fw-bolder fs-4">Edit item</p>
+			<button class="btn btn-dark ms-5">Save</button>
+			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','item', [], true);?>">cancel</a></div>
+		</div>
+<table class="table table-striped">
+	
+	<tr>
+		<td>
+			<label>SKU</label>
+		</td>
+		<td>
+			<input type="text" name="item[SKU]" value="<?php echo $item->SKU;?>">
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<label>Status</label>
+		</td>
+		<td>
+			<select name="item[status]" >
+				<?php foreach($item->getResource()->getStatusOptions() as $key => $value): ?>
+				<?php $selected = ($key == $item->getStatus()) ? 'selected' : ''; ?>
+				<option value="<?php echo $key; ?>" <?php echo $selected ;?>> <?php echo $value;?>
+				 </option>
+				<?php endforeach; ?>
+			</select>			
+		</td>
+	</tr>
+
+	<?php foreach($attributes as $key => $attribute): ?>
+		<tr>
+			<td><?php echo $attribute->name ;?></td>
+			<td>
+				<?php $this->getLayout()->createBlock('Core_Eav_Attribute_InputType')->setAttribute($attribute)->render(); ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
+		
+</table>
+</form>
+</body>
+</html>

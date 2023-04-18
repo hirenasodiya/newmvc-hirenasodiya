@@ -3,7 +3,7 @@
 /**
  * 
  */
-class Model_Eav_Attribute_Resource extends Model_Core_Table_Resource
+class Model_Core_Eav_Attribute_Resource extends Model_Core_Table_Resource
 {
 	function __construct()
 	{

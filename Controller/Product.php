@@ -50,7 +50,7 @@ class Controller_Product extends Controller_Core_Action
 			$layout->render();
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 			$this->redirect('grid','',[],true);
 		}
 	}
