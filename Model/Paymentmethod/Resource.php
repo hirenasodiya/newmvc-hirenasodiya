@@ -10,19 +10,12 @@ class Model_Paymentmethod_Resource extends Model_Core_Table_Resource
 		$this->setResourceName('payment_method');
 		$this->setPrimaryKey('payment_method_id');
 	}
-	protected 
-
-	const STATUS_ACTIVE = 1;
-	const STATUS_INACTIVE = 2;
-	const STATUS_ACTIVE_LBL = 'active';
-	const STATUS_INACTIVE_LBL = 'inactive';
-	const STATUS_DEFAULT = 2;
 
 	public function getStatusOptions()
 	{
 		return [
-			self::STATUS_ACTIVE => self::STATUS_ACTIVE_LBL,
-			self::STATUS_INACTIVE => self::STATUS_INACTIVE_LBL
+			Model_Paymentmethod::STATUS_ACTIVE => Model_Paymentmethod::STATUS_ACTIVE_LBL,
+			Model_Paymentmethod::STATUS_INACTIVE => Model_Paymentmethod::STATUS_INACTIVE_LBL
 		];
 	}
 }

@@ -28,7 +28,7 @@ $items = $this->getItems();
 		<tr>
 			<td><?php echo $item->entity_id ; ?></td>
 			<td><?php echo $item->SKU; ?></td>
-			<td><?php echo $item->status; ?></td>
+			<td><?php echo $item->getStatusText($item->status); ?></td>
 			<td><?php echo $item->created_at; ?></td>
 			<td><?php echo $item->updated_at; ?></td>
 

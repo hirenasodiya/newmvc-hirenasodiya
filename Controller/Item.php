@@ -66,8 +66,8 @@ class Controller_Item extends Controller_Core_Action
 
 			$itemPost = Ccc::getModel('Core_Request')->getPost('item');
 			$item = Ccc::getModel('item');
-			$item->setData($itemPost);
-			$item->save();
+			// $item->setData($itemPost);
+			// $item->save();
 
 			$attributePost = Ccc::getModel('Core_Request')->getPost('attribute');
 
@@ -75,6 +75,9 @@ class Controller_Item extends Controller_Core_Action
 				foreach ($value as $attributeId => $v) {
 					if (is_array($v)) {
 						$v = implode(",", $v);
+			// echo "<pre>";
+			// print_r($attributePost);
+			// die();
 					}
 
 					$model = Ccc::getModel('Core_table');
@@ -86,43 +89,37 @@ class Controller_Item extends Controller_Core_Action
 					$model->save();
 				}
 			}
+			
+			// die();
+			// // echo "<pre>";
+			// // print_r($items);
+			// if (!$items) {
+			// 	throw new Exception("Invalid data", 1);
+			// }
 
-
-
-
-
-
-
-			die();
-			// echo "<pre>";
-			// print_r($items);
-			if (!$items) {
-				throw new Exception("Invalid data", 1);
-			}
-
-			$itemId = Ccc::getModel('Core_Request')->getParam('entity_id');
-			if ($itemId) {
-				$item = Ccc::getModel('item')->load($itemId);
-				if (!$item) {
-					throw new Exception("Invalid item data", 1);
-				}
-				$item->updated_at = date('Y-m-d h-i-sA');
-			}
-			else
-			{
-				$item = Ccc::getModel('item');
-				$item->created_at = date('Y-m-d h-i-sA');
-			}
-			$result = $item->setData($items);
-			$final = $result->save();
-			if (!$final) {
-				throw new Exception("Data not saved", 1);
-			}
+			// $itemId = Ccc::getModel('Core_Request')->getParam('entity_id');
+			// if ($itemId) {
+			// 	$item = Ccc::getModel('item')->load($itemId);
+			// 	if (!$item) {
+			// 		throw new Exception("Invalid item data", 1);
+			// 	}
+			// 	$item->updated_at = date('Y-m-d h-i-sA');
+			// }
+			// else
+			// {
+			// 	$item = Ccc::getModel('item');
+			// 	$item->created_at = date('Y-m-d h-i-sA');
+			// }
+			// $result = $item->setData($items);
+			// $final = $result->save();
+			// if (!$final) {
+			// 	throw new Exception("Data not saved", 1);
+			// }
 			$this->getMessage()->addMessages("Data save successfully.", Model_Core_Message::SUCCESS);
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-			// $this->redirect('grid', null);
+			$this->redirect('grid', null);
 		
 	}
 

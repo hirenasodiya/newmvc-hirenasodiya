@@ -36,7 +36,7 @@ class Block_Core_Eav_Attribute_InputType extends Block_Core_Template
 		elseif($attribute->input_type == 'select') {
 			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_select')->setAttribute($this->getAttribute());
 		}
-		elseif($attribute->input_type == 'radio') {
+		elseif($attribute->input_type == 'multiselect') {
 			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_multiselect')->setAttribute($this->getAttribute());
 		}
 		else{
