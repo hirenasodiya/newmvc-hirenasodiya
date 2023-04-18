@@ -1,0 +1,4 @@
+2023-04-18 11-04-19 : SELECT * FROM `item_text` WHERE `entity_id` = 42
+
+2023-04-18 11-04-31 : SELECT * FROM `item_text` WHERE `entity_id` = 42
+

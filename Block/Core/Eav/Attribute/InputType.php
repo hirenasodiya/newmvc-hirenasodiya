@@ -6,6 +6,7 @@
 class Block_Core_Eav_Attribute_InputType extends Block_Core_Template
 {
 	protected $_attribute = null;
+	protected $_row = null;
 
 	public function __construct()
 	{
@@ -22,6 +23,17 @@ class Block_Core_Eav_Attribute_InputType extends Block_Core_Template
 	public function getAttribute()
 	{
 		return $this->_attribute;
+	}
+
+	public function setRow($row)
+	{
+		$this->_row = $row;
+		return $this;
+	}
+
+	public function getRow()
+	{
+		return $this->_row;
 	}
 
 	public function getInputTypeField()

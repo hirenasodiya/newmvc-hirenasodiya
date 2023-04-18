@@ -26,12 +26,18 @@ class Controller_Item extends Controller_Core_Action
 			}
 			$layout = $this->getLayout();
 			$item = Ccc::getModel('Item')->load($itemId);
-
 			if (!$item) {
 				throw new Exception("Invalid Request", 1);
 			}
 
-			$edit = $layout->createBlock('item_Edit')->setData(['item'=>$item]);
+			$model = Ccc::getModel('Core_table');
+
+			$query = "SELECT * FROM `item_text` WHERE `entity_id` = $itemId";
+			$model->getResource()->setResourceName('item_text')->setPrimaryKey('entity_id');
+			$itemText = $model->fetchAll($query);
+
+
+			$edit = $layout->createBlock('item_Edit')->setData(['item'=>$item, 'item_text' => $itemText]);
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();
 
@@ -66,8 +72,12 @@ class Controller_Item extends Controller_Core_Action
 
 			$itemPost = Ccc::getModel('Core_Request')->getPost('item');
 			$item = Ccc::getModel('item');
-			// $item->setData($itemPost);
-			// $item->save();
+			$item->created_at = date('Y-m-d h-i-sA');
+			$item->setData($itemPost);
+			// echo "<pre>";
+			// print_r($attributePost);
+			// die();
+			$item->save();
 
 			$attributePost = Ccc::getModel('Core_Request')->getPost('attribute');
 
@@ -75,9 +85,6 @@ class Controller_Item extends Controller_Core_Action
 				foreach ($value as $attributeId => $v) {
 					if (is_array($v)) {
 						$v = implode(",", $v);
-			// echo "<pre>";
-			// print_r($attributePost);
-			// die();
 					}
 
 					$model = Ccc::getModel('Core_table');
@@ -119,7 +126,7 @@ class Controller_Item extends Controller_Core_Action
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-			$this->redirect('grid', null);
+			// $this->redirect('grid', null);
 		
 	}
 

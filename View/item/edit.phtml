@@ -1,5 +1,5 @@
 <?php  
-$item = $this->getItem();
+$item = $this->getRow();
 $attributes = $this->getAttributes();
 // echo "<pre>";
 // print_r($attributes);
@@ -41,7 +41,7 @@ $attributes = $this->getAttributes();
 		<tr>
 			<td><?php echo $attribute->name ;?></td>
 			<td>
-				<?php $this->getLayout()->createBlock('Core_Eav_Attribute_InputType')->setAttribute($attribute)->render(); ?>
+				<?php $this->getLayout()->createBlock('Core_Eav_Attribute_InputType')->setAttribute($attribute)->setRow($item)->render(); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>

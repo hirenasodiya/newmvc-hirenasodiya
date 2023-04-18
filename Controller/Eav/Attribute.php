@@ -85,7 +85,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 					$attributeOption = $attributeOptionModel->fetchAll($query);
 					if ($attributeOption) {
 						foreach ($attributeOption->getData() as $row) {
-							if (!array_key_exists($row->option_id, $attributes['option']['exist'])) {
+							if (!array_key_exists($row->option_id, $attributes['exist']['name'])) {
 								$row->setData(['option_id' => $row->option_id]);
 								if (!$row->delete()) {
 									throw new Exception("data not deleted.", 1);
