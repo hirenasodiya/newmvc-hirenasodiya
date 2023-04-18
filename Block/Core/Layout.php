@@ -12,8 +12,6 @@ class Block_Core_Layout extends Block_Core_Template
         $this->prepareChildren();
     }
 
-
-
     public function prepareChildren()
     {   
         $head = $this->createBlock('Html_Head');

@@ -8,7 +8,7 @@ class Controller_Paymentmethod extends Controller_Core_Action
 		try {
 			$layout = $this->getLayout();
 			$grid = new Block_Paymentmethod_Grid();
-			$paymentMethods = $grid->getPaymentmethods();
+			$paymentMethods = $grid->getCollection();
 			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 
