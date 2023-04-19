@@ -10,6 +10,7 @@ class Model_Item extends Model_Core_Table
     const STATUS_ACTIVE_LBL = 'active';
     const STATUS_INACTIVE_LBL = 'inactive';
     const STATUS_DEFAULT = 2;
+    const ENTITY_TYPE_ID = 8;
 
     public function getStatus()
     {
@@ -37,6 +38,16 @@ class Model_Item extends Model_Core_Table
         $attributes = Ccc::getModel('Core_Eav_Attribute')->fetchAll($sql);
         return $attributes->getData();
     }
+
+    public function getAttributeValue($attribute)
+    {
+        if ($this->getId()) {
+            $query = "SELECT `value` FROM `item_{$attribute->backend_type}` WHERE `entity_id` = '{$this->getId()}' AND `attribute_id` = '{$attribute->getId()}'";
+            $row = $this->getResource()->getAdapter()->fetchOne($query);
+            return $row;
+        }
+    }
 }
+
 
 ?>

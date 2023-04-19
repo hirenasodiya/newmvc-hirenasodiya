@@ -6,6 +6,7 @@
 class Block_Core_Eav_Attribute_InputType extends Block_Core_Template
 {
 	protected $_attribute = null;
+	protected $_row = null;
 
 	public function __construct()
 	{
@@ -24,20 +25,34 @@ class Block_Core_Eav_Attribute_InputType extends Block_Core_Template
 		return $this->_attribute;
 	}
 
+	public function setRow($row)
+	{
+		$this->_row = $row;
+		return $this;
+	}
+
+	public function getRow()
+	{
+		// echo "<pre>";
+		// print_r($this->_row);
+		// die;
+		return $this->_row;
+	}
+
 	public function getInputTypeField()
 	{
 		$attribute = $this->getAttribute();
-		if ($attribute->input_type == 'text') {
-			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_text')->setAttribute($this->getAttribute());
+		if ($attribute->input_type == 'textbox') {
+			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_text')->setAttribute($attribute)->setRow($this->getRow());
 		}
 		elseif($attribute->input_type == 'textarea') {
-			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_textarea')->setAttribute($this->getAttribute());
+			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_textarea')->setAttribute($attribute)->setRow($this->getRow());
 		}
 		elseif($attribute->input_type == 'select') {
-			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_select')->setAttribute($this->getAttribute());
+			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_select')->setAttribute($attribute)->setRow($this->getRow());
 		}
 		elseif($attribute->input_type == 'multiselect') {
-			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_multiselect')->setAttribute($this->getAttribute());
+			return $this->getLayout()->createBlock('Core_Eav_Attribute_InputType_multiselect')->setAttribute($attribute)->setRow($this->getRow());
 		}
 		else{
 			echo "invalid inputtype";

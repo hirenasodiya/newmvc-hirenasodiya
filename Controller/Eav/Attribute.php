@@ -37,10 +37,6 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			$attributeId = (int) Ccc::getModel('Core_Request')->getParam('attribute_id');
 			$layout = $this->getLayout();
 			$attribute = Ccc::getModel('Core_Eav_attribute')->load($attributeId);
-			// echo "<pre>";
-			// print_r($attribute);
-			// die();	
-
 			$EavAttribute = Ccc::getModel('Core_Eav_Attribute');
 			$edit = $layout->createBlock('Core_Eav_Attribute_Edit')->setData(['attribute'=>$attribute]);
 			$layout->getChild('content')->addChild('edit',$edit);
@@ -79,6 +75,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 				throw new Exception("attributesAttribute data not saved.", 1);
 			} else {
 				$attributeId = $attribute->attribute_id;
+				if ($attributes['option']) {
 				if (array_key_exists('exist', $attributes['option'])) {
 					$query = "SELECT * FROM `eav_attribute_option` WHERE `attribute_id` = {$attributeId}";
 					$attributeOptionModel = Ccc::getModel('Core_Eav_Attribute_Option');
@@ -94,6 +91,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 						}
 					}
 				}
+
 				if (array_key_exists('new', $attributes['option'])) {
 					foreach ($attributes['option']['new'] as $optionData) {
 						$option['name'] = $optionData;
@@ -104,6 +102,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 						unset($option);
 					}
 				}
+			}
 
 			}
 			$this->getView()->getMessage()->addMessages('data saved Successfully.');

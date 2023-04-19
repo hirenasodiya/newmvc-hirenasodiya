@@ -12,7 +12,7 @@ class Block_Item_Edit extends Block_Core_Template
 		$this->setTemplate('item/edit.phtml');
 
 	}
-	public function getItem()
+	public function getRow()
 	{
 		$item = $this->getData('item');
 		return $item;

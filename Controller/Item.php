@@ -26,10 +26,14 @@ class Controller_Item extends Controller_Core_Action
 			}
 			$layout = $this->getLayout();
 			$item = Ccc::getModel('Item')->load($itemId);
-
 			if (!$item) {
 				throw new Exception("Invalid Request", 1);
 			}
+
+			// $model = Ccc::getModel('Core_table');
+			// $query = "SELECT * FROM `item_text` WHERE `entity_id` = $itemId";
+			// $model->getResource()->setResourceName('item_text')->setPrimaryKey('entity_id');
+			// $itemText = $model->fetchAll($query);
 
 			$edit = $layout->createBlock('item_Edit')->setData(['item'=>$item]);
 			$layout->getChild('content')->addChild('edit',$edit);
@@ -51,9 +55,8 @@ class Controller_Item extends Controller_Core_Action
 			$layout->render();
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid');
-		}
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+			}
 	}
 
 	public function saveAction()
@@ -65,56 +68,42 @@ class Controller_Item extends Controller_Core_Action
 			}
 
 			$itemPost = Ccc::getModel('Core_Request')->getPost('item');
-			$item = Ccc::getModel('item');
-			// $item->setData($itemPost);
-			// $item->save();
+			$itemId = Ccc::getModel('Core_Request')->getParam('entity_id');
+			if ($itemId) {
+				$item = Ccc::getModel('item')->load($itemId);
+				if (!$item) {
+					throw new Exception("Invalid item data", 1);
+				}
+				$item->updated_at = date('Y-m-d h-i-sA');
+			}
+			else
+			{
+				$item = Ccc::getModel('item');
+				$item->created_at = date('Y-m-d h-i-sA');
+			}
+			$item->setData($itemPost);
+			$final = $item->save();
+			if (!$final) {
+				throw new Exception("Data not saved", 1);
+			}		
+			else{
+				$attributePost = Ccc::getModel('Core_Request')->getPost('attribute');
 
-			$attributePost = Ccc::getModel('Core_Request')->getPost('attribute');
+				foreach ($attributePost as $backendType => $value) {
+					foreach ($value as $attributeId => $v) {
+						if (is_array($v)) {
+							$v = implode(",", $v);
+						}
 
-			foreach ($attributePost as $backedType => $value) {
-				foreach ($value as $attributeId => $v) {
-					if (is_array($v)) {
-						$v = implode(",", $v);
-			// echo "<pre>";
-			// print_r($attributePost);
-			// die();
+						$model = Ccc::getModel('Core_table');
+						$resource = $model->getResource()->setResourceName("item_{$backendType}")->setPrimaryKey('value_id');
+						$query = "INSERT INTO `item_{$backendType}` (`entity_id`,`attribute_id`,`value`) VALUES('{$item->getId()}','{$attributeId}','{$v}') ON DUPLICATE KEY UPDATE `value` ='{$v}'";
+
+						$model->getResource()->getAdapter()->query($query);
 					}
-
-					$model = Ccc::getModel('Core_table');
-					$resource = $model->getResource()->setResourceName("item_{$backedType}")->setPrimaryKey('value_id');
-
-					$model->entity_id = $item->getId();
-					$model->attribute_id = $attributeId;
-					$model->value = $v;
-					$model->save();
 				}
 			}
 			
-			// die();
-			// // echo "<pre>";
-			// // print_r($items);
-			// if (!$items) {
-			// 	throw new Exception("Invalid data", 1);
-			// }
-
-			// $itemId = Ccc::getModel('Core_Request')->getParam('entity_id');
-			// if ($itemId) {
-			// 	$item = Ccc::getModel('item')->load($itemId);
-			// 	if (!$item) {
-			// 		throw new Exception("Invalid item data", 1);
-			// 	}
-			// 	$item->updated_at = date('Y-m-d h-i-sA');
-			// }
-			// else
-			// {
-			// 	$item = Ccc::getModel('item');
-			// 	$item->created_at = date('Y-m-d h-i-sA');
-			// }
-			// $result = $item->setData($items);
-			// $final = $result->save();
-			// if (!$final) {
-			// 	throw new Exception("Data not saved", 1);
-			// }
 			$this->getMessage()->addMessages("Data save successfully.", Model_Core_Message::SUCCESS);
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);

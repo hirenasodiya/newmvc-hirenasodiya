@@ -33,6 +33,20 @@ class Ccc
 		}
 		return null;
 	}
+
+	public static function log($data, $fileName = 'system.log', $newFile = false)
+	{
+		self::getModel('Core_Log')->log($data, $fileName, $newFile);
+	}
+
+	public static function getBaseDir($subdir = null)
+	{
+		$dir = getcwd();
+		if ($subdir) {
+			return $dir.$subdir;
+		}
+		return $dir;
+	}
 }
 Ccc::init();
 

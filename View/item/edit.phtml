@@ -1,8 +1,7 @@
 <?php  
-$item = $this->getItem();
+$item = $this->getRow();
+// print_r($item);
 $attributes = $this->getAttributes();
-// echo "<pre>";
-// print_r($attributes);
 
 ?>
 <form action="<?php echo $this->getUrl('save','item')?>" method="post">
@@ -41,7 +40,7 @@ $attributes = $this->getAttributes();
 		<tr>
 			<td><?php echo $attribute->name ;?></td>
 			<td>
-				<?php $this->getLayout()->createBlock('Core_Eav_Attribute_InputType')->setAttribute($attribute)->render(); ?>
+				<?php $this->getLayout()->createBlock('Core_Eav_Attribute_InputType')->setAttribute($attribute)->setRow($item)->render(); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
