@@ -26,6 +26,12 @@ class Model_Core_Adapter {
 		return $connect;
 	}
 
+	public function query($query)
+	{
+		$connect = $this->connect();
+		return mysqli_query($connect, $query);
+	}
+
 	public function fetchAll($query)
 	{
 		$connect = $this->connect();
@@ -57,11 +63,17 @@ class Model_Core_Adapter {
 	public function fetchOne($query)
 	{
 		$connect = $this->connect();
-		$result = mysqli_query($connect, $result);
-		if (!$result) {
-			return false;
+		$result = mysqli_query($connect, $query);
+		if ($result->num_rows == 0) {
+			return null;
 		}
 		$data = $result->fetch_array();
+		if(array_key_exists(0, $data))
+		{
+			return $data[0];
+		}
+		return null;
+
 	}
 
 	public function fetchRow($query)

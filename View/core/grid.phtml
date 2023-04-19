@@ -22,6 +22,11 @@ $rows = $this->getCollection();
 			<th><?php echo $action['title']; ?></th>
 			<?php endforeach; ?>
 		</tr>
+		<?php if (!$rows):?>
+		<tr>
+			<td colspan="16">No record found</td>
+		</tr>
+		<?php else: ?>
 		<?php foreach($rows->getData() as $row):?>
 			<tr>
 				<?php foreach($this->getColumns() as $key => $column):  ?>
@@ -33,6 +38,7 @@ $rows = $this->getCollection();
 				<?php endforeach; ?>
 			</tr>
 		<?php endforeach; ?>
+		<?php endif; ?>
 	</table>
 </body>
 </html>

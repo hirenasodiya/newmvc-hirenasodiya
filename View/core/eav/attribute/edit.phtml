@@ -7,7 +7,7 @@ $entityTypes = $this->getEntityType();
 
 
 // echo "<pre>";
-// print_r($attributeOptions);
+// print_r($attribute);
 
 ?>
 <form action="<?php echo $this->getUrl('save', 'eav_attribute', ['attribute_id' => $attribute->getId()]) ?>" method="post">
@@ -23,7 +23,8 @@ $entityTypes = $this->getEntityType();
             <td>
                 <select name="attribute[entity_type_id]">
                     <?php foreach ($entityTypes->getData() as $entityType): ?>
-                    <option value="<?php echo $entityType->entity_type_id;  ?>"><?php echo $entityType->name; ?></option>
+                        <?php $selected = ($entityType->entity_type_id == $attribute->entity_type_id) ? 'selected' : '' ?>
+                    <option value="<?php echo $entityType->entity_type_id;  ?>"<?php echo $selected ?> ><?php echo $entityType->name; ?></option>
                     <?php endforeach; ?>                 
                 </select>
             </td>
@@ -40,11 +41,16 @@ $entityTypes = $this->getEntityType();
 			<td>backend type</td>
 			<td>
 				<select name="attribute[backend_type]" >
-                    <option value="integer">Integer</option>
-                    <option value="varchar">Varchar</option>
-                    <option value="decimal">Decimal</option>
-                    <option value="datetime">Date and Time</option>
-                    <option value="text">Text</option>
+               
+                    <option value="integer" <?php echo ($attribute->backend_type == 'integer') ? 'selected' : '' ?>>Integer</option>
+                
+                    <option value="varchar" <?php echo ($attribute->backend_type == 'varchar') ? 'selected' : '' ?>>Varchar</option>
+                
+                    <option value="decimal" <?php echo ($attribute->backend_type == 'decimal') ? 'selected' : '' ?>>Decimal</option>
+                
+                    <option value="datetime" <?php echo ($attribute->backend_type == 'datatime') ? 'selected' : '' ?>>Date and Time</option>
+                
+                    <option value="text" <?php echo ($attribute->backend_type == 'text' ) ? 'selected' : '' ?>>Text</option>
                 </select>
 			</td>
             <td></td>
@@ -53,12 +59,12 @@ $entityTypes = $this->getEntityType();
             <td>input_type</td>
             <td>
                 <select id="inputTypeSelect" name="attribute[input_type]" onchange="changeInputType(this)">
-                    <option value="textBox">Text Box</option>
-                    <option value="textArea">Text Area</option>
-                    <option value="select">Select</option>
-                    <option value="multiSelect">Multi Select</option>
-                    <option value="radio">Radio</option>
-                    <option value="checkBox">Check Box</option>
+                    <option value="textbox" <?php echo ($attribute->input_type == 'textbox') ? 'selected' : '' ?>>textbox</option>
+                    <option value="textarea" <?php echo ($attribute->input_type == 'textarea') ? 'selected' : '' ?>>textarea</option>
+                    <option value="select" <?php echo ($attribute->input_type == 'select') ? 'selected' : '' ?>>select</option>
+                    <option value="multiselect" <?php echo ($attribute->input_type == 'multiselect') ? 'selected' : '' ?>>multiselect</option>
+                    <option value="radio" <?php echo ($attribute->input_type == 'radio') ? 'selected' : '' ?>>radio</option>
+                    <option value="checkbox" <?php echo ($attribute->input_type == 'checkbox') ? 'selected' : '' ?>>checkbox</option>
                 </select>
             </td>
             <td>
@@ -137,7 +143,7 @@ $('#addOption').click(function () {
 
 $('#inputTypeSelect').change(function () {
     var inputType = $(this);
-    if (inputType.val() == 'select' || inputType.val() == 'multiSelect' || inputType.val() == 'radio' || inputType.val() == 'checkBox') {
+    if (inputType.val() == 'select' || inputType.val() == 'multiselect' || inputType.val() == 'radio' || inputType.val() == 'checkBox') {
         $('#inputTypeOptionDiv').show();
     }
     else{

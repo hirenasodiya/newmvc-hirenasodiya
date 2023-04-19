@@ -1,16 +1,25 @@
-<?php
-    $attribute = $this->getAttribute();
+<?php $attribute = $this->getAttribute(); ?>
+<?php $row = $this->getRow(); ?>
+<?php 
+$options = $attribute->getOption(); 
+$optionValues = $row->getAttributeValue($attribute);
+if ($optionValues) {
+    $optionValues = explode(',', $optionValues);
+}
 ?>
-<?php
-    $options = $attribute->getOption();
-    // echo "<pre>";
-    // print_r($options);die;
-?>
-<select name="attribute[<?php echo $attribute->backend_type ?>][<?php echo $attribute->getId();?>]" multiple>
-    <option value="0">select</option>
-    <?php if($options): ?>
-        <?php foreach ($options->getData() as $option ):?>
-            <option value="<?php echo $option->name ?>"><?php echo $option->name; ?></option>
+
+<select name="attribute[<?php echo $attribute->backend_type; ?>][<?php echo $attribute->getId(); ?>][]" multiple>
+    <?php if ($options) : ?>
+        <?php foreach($options->getData() as $option): ?>
+        <?php $selected = '';
+        if ($optionValues) {
+            $selected = (in_array($option->option_id, $optionValues))? 'selected':'';
+        } 
+        ?>
+
+        <option value="<?php echo $option->option_id; ?>" <?php echo $selected; ?>>
+            <?php echo $option->name; ?>
+        </option>
         <?php endforeach; ?>
     <?php endif; ?>
 </select>
