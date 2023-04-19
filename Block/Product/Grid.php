@@ -46,15 +46,24 @@ class Block_Product_Grid extends Block_Core_Grid
 		$this->addColumn('updated_at',[
 			'title' => 'Updated_at',
 		]);
+		$this->addColumn('base',[
+			'title' => 'Base Id',
+		]);
+		$this->addColumn('thumbnail',[
+			'title' => 'Thumbnail Id',
+		]);
+		$this->addColumn('small',[
+			'title' => 'Small Id',
+		]);
 
 		return parent::_prepareColumns();
 	}
 
 	protected function _prepareActions()
 	{
-		$this->addAction('media',[
+		$this->addAction(null,[
 			'title' => 'Media',
-			'method' => 'getEditUrl' 
+			'method' => 'getMediaUrl' 
 		]);
 		$this->addAction('edit',[
 			'title' => 'Edit',
@@ -76,6 +85,11 @@ class Block_Product_Grid extends Block_Core_Grid
 			'url' => $this->getUrl('add')
 		]);
 		return parent::_prepareButtons();
+	}
+
+	public function getMediaUrl($row, $key)
+	{
+		return  $this->getUrl($key, 'product_media' , ['product_id' => $row->getId()], true);
 	}
 
 	public function getEditUrl($row, $key)

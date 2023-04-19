@@ -1,15 +1,12 @@
 <?php  
 $final = $this->getCustomer();
-
 $customer = $final[0];
-$address = $final[1];
-// echo "<pre>";
-// print_r($this);
-// print_r($final);
-// die();
+
+$billingAddress = $this->getBillingAddress();
+$shippingAddress = $this->getShippingAddress();
 
 ?>
-<form action="<?php echo $this->getUrl('save','customer');?>" method="post">
+<form action="<?php echo $this->getUrl('save','customer', ['customer_id' => $customer->getId()]);?>" method="post">
 <div class="d-flex align-items-center justify-content-sm-between">
 		<p class="fw-bolder fs-4">Edit Customer</p>
 			<button class="btn btn-dark ms-5">Save</button>
@@ -88,15 +85,15 @@ $address = $final[1];
 			<label>address</label>
 		</td>
 		<td>
-			<input type="text" name="address[billing][address]" value="<?php echo $address->address;?>">
+			<input type="text" name="billingAddress[address]" value="<?php echo $billingAddress->address;?>">
 		</td>
 	</tr>
 	<tr>
-		<td>
+		<td>shippingAddress
 			<label>city</label>
 		</td>
 		<td>
-			<input type="text" name="address[billing][city]" value="<?php echo $address->city; ?>">
+			<input type="text" name="billingAddress[city]" value="<?php echo $billingAddress->city; ?>">
 		</td>
 	</tr>
 	<tr>
@@ -104,7 +101,7 @@ $address = $final[1];
 			<label>state</label>
 		</td>
 		<td>
-			<input type="text" name="address[billing][state]" value="<?php echo $address->state; ?>">
+			<input type="text" name="billingAddress[state]" value="<?php echo $billingAddress->state; ?>">
 		</td>
 	</tr>
 	<tr>
@@ -112,7 +109,7 @@ $address = $final[1];
 			<label>country</label>
 		</td>
 		<td>
-			<input type="text" name="address[billing][country]" value="<?php echo $address->country; ?>">
+			<input type="text" name="billingAddress[country]" value="<?php echo $billingAddress->country; ?>">
 		</td>
 	</tr>
    	<tr>
@@ -120,7 +117,7 @@ $address = $final[1];
 			<label>zipcode</label>
 		</td>
 		<td>
-			<input type="text" name="address[billing][zipcode]" value="<?php echo $address->zipcode; ?>">
+			<input type="text" name="billingAddress[zipcode]" value="<?php echo $billingAddress->zipcode; ?>">
 		</td>
 	</tr>
 </table>
@@ -131,7 +128,7 @@ $address = $final[1];
 			<label>address</label>
 		</td>
 		<td>
-			<input type="text" name="address[shipping][address]" value="<?php echo $address->address;?>">
+			<input type="text" name="shippingAddress[address]" value="<?php echo $shippingAddress->address;?>">
 		</td>
 	</tr>
 	<tr>
@@ -139,7 +136,7 @@ $address = $final[1];
 			<label>city</label>
 		</td>
 		<td>
-			<input type="text" name="address[shipping][city]" value="<?php echo $address->city; ?>">
+			<input type="text" name="shippingAddress[city]" value="<?php echo $shippingAddress->city; ?>">
 		</td>
 	</tr>
 	<tr>
@@ -147,7 +144,7 @@ $address = $final[1];
 			<label>state</label>
 		</td>
 		<td>
-			<input type="text" name="address[shipping][state]" value="<?php echo $address->state; ?>">
+			<input type="text" name="shippingAddress[state]" value="<?php echo $shippingAddress->state; ?>">
 		</td>
 	</tr>
 	<tr>
@@ -155,15 +152,14 @@ $address = $final[1];
 			<label>country</label>
 		</td>
 		<td>
-			<input type="text" name="address[shipping][country]" value="<?php echo $address->country; ?>">
-		</td>
-	</tr>
+			<input type="text" name="shippingAddress[country]" value="<?php echo $shippingAddress->country; ?>">
+		</tdshippingAddress	</tr>
    	<tr>
 		<td>
 			<label>zipcode</label>
 		</td>
 		<td>
-			<input type="text" name="address[shipping][zipcode]" value="<?php echo $address->zipcode; ?>">
+			<input type="text" name="shippingAddress[zipcode]" value="<?php echo $shippingAddress->zipcode; ?>">
 		</td>
 	</tr>
 
