@@ -6,12 +6,13 @@ class Controller_Product extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Product_Grid();
+			$grid = $layout->createBlock('Product_Grid');
+			// $product = $grid->getCollection();
 			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 
 		}
 	}
@@ -26,7 +27,7 @@ class Controller_Product extends Controller_Core_Action
 			$layout->render();
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 			$this->redirect('grid');
 		}
 	}
@@ -50,9 +51,9 @@ class Controller_Product extends Controller_Core_Action
 			$layout->render();
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid','',[],true);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
+			$this->redirect('grid','',[],true);
 	}
 
 	public function saveAction()

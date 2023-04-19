@@ -151,6 +151,8 @@ class Controller_Customer extends Controller_Core_Action
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
 		}
+
+			$this->redirect('grid', null, [], true);
 	}
 
 	public function _saveShippingAddress($customer)
@@ -214,7 +216,7 @@ class Controller_Customer extends Controller_Core_Action
 			$this->getView()->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
 		
-		// $this->redirect('grid', null, [], true);
+		$this->redirect('grid', null, [], true);
 	}
 }
 

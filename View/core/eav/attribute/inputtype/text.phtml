@@ -1,0 +1,6 @@
+ <?php $attribute = $this->getAttribute();  ?>
+ <?php $rows = $this->getRow();    ?>
+ <?php #foreach($rows->getData() as $row):?>
+ <?php #if($row->attribute_id == $attribute->attribute_id){$description = $row->value;} ?>
+<?php #endforeach; ?>                
+<input type="text" name="attribute[<?php echo $attribute->backend_type;?>][<?php echo $attribute->attribute_id; ?>]" value="<?php echo $rows->getAttributeValue($attribute); ?>">

@@ -1,0 +1,115 @@
+<?php $customerData = $this->getcustomers(); ?>
+
+<div>
+	<label>Order System</label>
+</div>
+<form action="" method="post">
+<div class="d-flex p-2">
+	<label>customer name</label>
+<select>
+        <option value="">select customer</option>
+        <?php foreach($customerData->getData() as $customer): ?>
+        <option value="<?php echo $customer->customer_id; ?> <?php if($customer->customer_id == $id) {echo "selected";} ?>" >
+            <?php echo $customer->first_name; ?>
+        </option>
+        <?php endforeach; ?>
+    </select>
+
+<button>ok</button>
+</div>
+</form>
+<div class="d-flex p-2">
+	<label>Email</label>
+<input type="text" name="">
+	<label>Mobile</label>
+<input type="text" name="">
+</div>
+
+<p class="fw-bolder fs-4"> Billing Address</p>
+<table class="table table-striped">
+	<tr>
+		<td>
+			<label>address</label>
+		</td>
+		<td>
+			<input type="text" name="address[billing][address]" value="<?php ?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>city</label>
+		</td>
+		<td>
+			<input type="text" name="address[billing][city]" value="<?php ?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>state</label>
+		</td>
+		<td>
+			<input type="text" name="address[billing][state]" value="<?php  ?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>country</label>
+		</td>
+		<td>
+			<input type="text" name="address[billing][country]" value="<?php  ?>">
+		</td>
+	</tr>
+   	<tr>
+		<td>
+			<label>zipcode</label>
+		</td>
+		<td>
+			<input type="text" name="address[billing][zipcode]" value="<?php ?>">
+		</td>
+	</tr>
+</table>
+<input type="checkbox" value=""> <label>Save to Address book </label>
+<p class="fw-bolder fs-4">Shipping Address</p>
+<table class="table table-striped">
+	<tr>
+		<td>
+			<label>address</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][address]" value="<?php ?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>city</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][city]" value="<?php ?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>state</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][state]" value="<?php  ?>">
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<label>country</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][country]" value="<?php  ?>">
+		</td>
+	</tr>
+   	<tr>
+		<td>
+			<label>zipcode</label>
+		</td>
+		<td>
+			<input type="text" name="address[shipping][zipcode]" value="<?php  ?>">
+		</td>
+	</tr>
+</table>
+<input type="checkbox" value=""> <label>Save to Address book </label>

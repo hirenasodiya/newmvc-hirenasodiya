@@ -28,7 +28,7 @@ class Block_Product_Grid extends Block_Core_Grid
 		$this->addColumn('quantity',[
 			'title' => 'Quantity',
 		]);
-		$this->addColumn('Description',[
+		$this->addColumn('description',[
 			'title' => 'description',
 		]);
 		$this->addColumn('status',[
