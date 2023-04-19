@@ -1,6 +1,6 @@
 <?php $attribute = $this->getAttribute(); ?>
 <?php $options = $attribute->getOption(); #echo "<pre>"; print_r($options->getData()); ?>
-<?php $row = $this->getRow(); #echo "<pre>"; print_r($row->getAttributeValue($attribute)); ?>
+<?php $row = $this->getRow(); #echo "<pre>"; print_r($row); ?>
 
 <select name="attribute[<?php echo $attribute->backend_type ?>][<?php echo $attribute->getId();?>]">
     <option value="0">select</option>
