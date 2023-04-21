@@ -49,9 +49,9 @@ class Block_Salesman_Grid extends Block_Core_Grid
 
 	protected function _prepareActions()
 	{
-		$this->addAction('prices',[
+		$this->addAction(null,[
 			'title' => 'Prices',
-			'method' => 'getDeleteUrl'
+			'method' => 'getPriceUrl'
 		]);
 		$this->addAction('edit',[
 			'title' => 'Edit',
@@ -72,6 +72,11 @@ class Block_Salesman_Grid extends Block_Core_Grid
 			'url' => $this->getUrl('add')
 		]);
 		return parent::_prepareButtons();
+	}
+
+	public function getPriceUrl($row, $key)
+	{
+		return  $this->getUrl($key, 'salesman_price' , ['salesman_id' => $row->getId()], true);
 	}
 
 	public function getEditUrl($row, $key)

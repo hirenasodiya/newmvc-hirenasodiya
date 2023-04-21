@@ -1,23 +1,22 @@
 <?php $customerData = $this->getcustomers(); ?>
-
+<?php $customerId = Ccc::getRegistry('customer_id'); ?>
 <div>
 	<label>Order System</label>
 </div>
-<form action="" method="post">
 <div class="d-flex p-2">
+<form action="" method="post">
 	<label>customer name</label>
 <select>
         <option value="">select customer</option>
         <?php foreach($customerData->getData() as $customer): ?>
-        <option value="<?php echo $customer->customer_id; ?> <?php if($customer->customer_id == $id) {echo "selected";} ?>" >
+        <option value="<?php echo $customer->customer_id; ?> <?php if($customer->customer_id == $customerId) {echo "selected";} ?>" >
             <?php echo $customer->first_name; ?>
         </option>
         <?php endforeach; ?>
     </select>
-
-<button>ok</button>
-</div>
+<input type="submit" name="submit" value="ok">
 </form>
+</div>
 <div class="d-flex p-2">
 	<label>Email</label>
 <input type="text" name="">

@@ -6,12 +6,14 @@ class Controller_Shippingmethod extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Shippingmethod_Grid();
+			$grid = $layout->createBlock('shippingMethod_Grid');
+			// $product = $grid->getCollection();
 			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
 		}
 	}
 
@@ -63,7 +65,6 @@ class Controller_Shippingmethod extends Controller_Core_Action
 			}
 
 			$shippingMethods = Ccc::getModel('Core_Request')->getPost('shippingmethod');
-			print_r($shippingMethods);
 			if (!$shippingMethods) {
 				throw new Exception("Invalid data posted", 1);
 			}
@@ -86,14 +87,31 @@ class Controller_Shippingmethod extends Controller_Core_Action
 			if (!$shippingMethod->save()) {
 				throw new Exception("Unable to save", 1);
 			}
+			else{
+				$attributePost = Ccc::getModel('Core_Request')->getPost('attribute');
+
+				foreach ($attributePost as $backendType => $value) {
+					foreach ($value as $attributeId => $v) {
+						if (is_array($v)) {
+							$v = implode(",", $v);
+						}
+
+						$model = Ccc::getModel('Core_table');
+						$resource = $model->getResource()->setResourceName("shipping_method_{$backendType}")->setPrimaryKey('value_id');
+						$query = "INSERT INTO `shipping_method_{$backendType}` (`entity_id`,`attribute_id`,`value`) VALUES('{$shippingMethod->getId()}','{$attributeId}','{$v}') ON DUPLICATE KEY UPDATE `value` ='{$v}'";
+
+						$model->getResource()->getAdapter()->query($query);
+					}
+				}
+			}
 			
 			$this->getMessage()->addMessages("Data save successfully.", Model_Core_Message::SUCCESS);
-			$this->redirect('grid', null, null, true);
 
 			} catch (Exception $e) {
-			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
-			$this->redirect('grid', null);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
 		}
+			$this->redirect('grid', null);
 	}
 
 
@@ -115,7 +133,8 @@ class Controller_Shippingmethod extends Controller_Core_Action
 			$this->redirect('grid', null, null, true);
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
 		}
 		$this->redirect('grid',null,[],true);
 	}

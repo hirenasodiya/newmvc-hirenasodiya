@@ -3,13 +3,13 @@
 /**
  * 
  */
-class Block_Order_Quote extends Block_Core_Template
+class Block_Order_New extends Block_Core_Template
 {
 	
 	function __construct()
 	{
 		parent::__construct();
-		$this->setTemplate('order/quote.phtml');
+		$this->setTemplate('order/new.phtml');
 
 	}
 	public function getCustomers()

@@ -1,6 +1,8 @@
 <?php  
 
-$paymentMethod = $this->getPaymentMethod();
+$paymentMethod = $this->getRow();
+$attributes = $this->getAttributes();
+
 
 ?>
 
@@ -34,4 +36,12 @@ $paymentMethod = $this->getPaymentMethod();
 			</select>
 			</td>
 		</tr>
+		<?php foreach($attributes as $key => $attribute): ?>
+		<tr>
+			<td><?php echo $attribute->name ;?></td>
+			<td>
+				<?php $this->getLayout()->createBlock('Core_Eav_Attribute_InputType')->setAttribute($attribute)->setRow($paymentMethod)->render(); ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
 	</table>

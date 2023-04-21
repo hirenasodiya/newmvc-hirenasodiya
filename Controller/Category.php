@@ -8,8 +8,9 @@ class Controller_Category extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Category_Grid();
-			$layout->getChild('content')->addChild('grid', $grid);
+			$grid = $layout->createBlock('Category_Grid');
+			// $category = $grid->getCollection();
+			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);

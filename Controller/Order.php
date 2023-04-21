@@ -6,9 +6,9 @@ class Controller_Order extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Order_Grid();
-			// $Orders = $grid->getOrders();
-			$layout->getChild('content')->addChild('grid', $grid);
+			$grid = $layout->createBlock('order_Grid');
+			// $order = $grid->getCollection();
+			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 
 		} catch (Exception $e) {
