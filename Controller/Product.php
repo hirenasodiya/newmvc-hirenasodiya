@@ -89,7 +89,7 @@ class Controller_Product extends Controller_Core_Action
 			}
 			$this->getMessage()->addMessages("Data save successfully.", Model_Core_Message::SUCCESS);
 		} catch (Exception $e) {
-			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
 			$this->redirect('grid', null);
 		
@@ -112,7 +112,7 @@ class Controller_Product extends Controller_Core_Action
 			$this->redirect('grid', null, null, true);
 
 		} catch (Exception $e) {
-			$this->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
 		$this->redirect('grid',null,[],true);
 	}

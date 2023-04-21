@@ -28,7 +28,7 @@ class Block_Core_Eav_Attribute_Edit extends Block_Core_Template
 		
 		$sql = "SELECT * FROM `eav_attribute_option` WHERE `attribute_id` = $attributeId";
 		$attributeOption = Ccc::getModel('Core_Eav_Attribute_Option')->fetchAll($sql);
-		return $attributeOption->getData();
+		return $attributeOption;
 	}
 
 	public function getEntityType()

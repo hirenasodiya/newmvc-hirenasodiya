@@ -1,6 +1,8 @@
 <?php  
 
-$shippingMethod = $this->getShippingMethod();
+$shippingMethod = $this->getRow();
+$attributes = $this->getAttributes();
+
 
 
 ?>
@@ -42,6 +44,14 @@ $shippingMethod = $this->getShippingMethod();
 			</select>
 			</td>
 		</tr>
+		<?php foreach($attributes as $key => $attribute): ?>
+		<tr>
+			<td><?php echo $attribute->name ;?></td>
+			<td>
+				<?php $this->getLayout()->createBlock('Core_Eav_Attribute_InputType')->setAttribute($attribute)->setRow($shippingMethod)->render(); ?>
+			</td>
+		</tr>
+	<?php endforeach; ?>
 	</table>
 </form>
 </body>

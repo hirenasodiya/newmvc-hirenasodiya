@@ -12,9 +12,15 @@ class Block_Shippingmethod_Edit extends Block_Core_Template
 		$this->setTemplate('shippingmethod/edit.phtml');
 	}
 
-	public function getShippingMethod()
+	public function getRow()
 	{
 		$shippingMethod = $this->getData('shippingmethod');
 		return $shippingMethod;
+	}
+
+	public function getAttributes()
+	{
+		$attribute = Ccc::getModel('shippingmethod')->getAttributes();
+		return $attribute;
 	}
 }

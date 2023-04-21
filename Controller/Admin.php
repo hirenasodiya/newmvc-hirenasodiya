@@ -10,7 +10,8 @@ class Controller_Admin extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Admin_Grid();
+			$grid = $layout->createBlock('Admin_Grid');
+			// $admin = $grid->getCollection();
 			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 

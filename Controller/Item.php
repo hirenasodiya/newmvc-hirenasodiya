@@ -6,9 +6,9 @@ class Controller_Item extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Item_Grid();
-			$items = $grid->getItems();
-			$layout->getChild('content')->addChild('grid', $grid);
+			$grid = $layout->createBlock('item_Grid');
+			// $item = $grid->getCollection();
+			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 
 		} catch (Exception $e) {
@@ -29,12 +29,6 @@ class Controller_Item extends Controller_Core_Action
 			if (!$item) {
 				throw new Exception("Invalid Request", 1);
 			}
-
-			// $model = Ccc::getModel('Core_table');
-			// $query = "SELECT * FROM `item_text` WHERE `entity_id` = $itemId";
-			// $model->getResource()->setResourceName('item_text')->setPrimaryKey('entity_id');
-			// $itemText = $model->fetchAll($query);
-
 			$edit = $layout->createBlock('item_Edit')->setData(['item'=>$item]);
 			$layout->getChild('content')->addChild('edit',$edit);
 			$layout->render();

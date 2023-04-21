@@ -7,8 +7,9 @@ class Controller_Salesman extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Salesman_Grid();
-			$layout->getChild('content')->addChild('grid', $grid);
+			$grid = $layout->createBlock('Salesman_Grid');
+			// $salesman = $grid->getCollection();
+			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 
 		} catch (Exception $e) {

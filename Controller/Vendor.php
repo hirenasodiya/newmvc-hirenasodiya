@@ -6,8 +6,9 @@ class Controller_Vendor extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Vendor_Grid();
-			$layout->getChild('content')->addChild('grid', $grid);
+			$grid = $layout->createBlock('Vendor_Grid');
+			// $vendor = $grid->getCollection();
+			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);

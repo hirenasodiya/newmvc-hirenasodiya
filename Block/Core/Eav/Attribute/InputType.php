@@ -33,9 +33,6 @@ class Block_Core_Eav_Attribute_InputType extends Block_Core_Template
 
 	public function getRow()
 	{
-		// echo "<pre>";
-		// print_r($this->_row);
-		// die;
 		return $this->_row;
 	}
 

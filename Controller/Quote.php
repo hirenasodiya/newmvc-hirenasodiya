@@ -2,13 +2,13 @@
 
 class Controller_Quote extends Controller_Core_Action
 {
-	public function quoteAction()
+	public function newAction()
 	{
 		try {
 			$layout = $this->getLayout();
-			$quote = new Block_Order_Quote();
-			// $Orders = $Quote->getOrders();
-			$layout->getChild('content')->addChild('Quote', $quote);
+			$order = $layout->createBlock('Order_New');
+			// $order = $order->getCollection();
+			$layout->getChild('content')->addChild('grid',$order);
 			$layout->render();
 
 		} catch (Exception $e) {

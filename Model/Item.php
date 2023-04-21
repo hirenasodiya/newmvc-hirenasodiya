@@ -10,7 +10,7 @@ class Model_Item extends Model_Core_Table
     const STATUS_ACTIVE_LBL = 'active';
     const STATUS_INACTIVE_LBL = 'inactive';
     const STATUS_DEFAULT = 2;
-    const ENTITY_TYPE_ID = 8;
+    const ENTITY_TYPE_ID = 6;
 
     public function getStatus()
     {

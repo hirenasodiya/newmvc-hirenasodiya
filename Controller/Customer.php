@@ -6,9 +6,9 @@ class Controller_Customer extends Controller_Core_Action
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = new Block_Customer_Grid();
-			$customers = $grid->getCollection();
-			$layout->getChild('content')->addChild('grid', $grid);
+			$grid = $layout->createBlock('customer_Grid');
+			// $customer = $grid->getCollection();
+			$layout->getChild('content')->addChild('grid',$grid);
 			$layout->render();
 
 		} catch (Exception $e) {

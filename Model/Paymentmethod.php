@@ -10,6 +10,8 @@ class Model_Paymentmethod extends Model_Core_Table
     const STATUS_ACTIVE_LBL = 'active';
     const STATUS_INACTIVE_LBL = 'inactive';
     const STATUS_DEFAULT = 2;
+    const ENTITY_TYPE_ID = 8;
+
 
     public function getStatus()
     {
@@ -29,6 +31,22 @@ class Model_Paymentmethod extends Model_Core_Table
         }
 
         return $statuses[self::STATUS_DEFAULT];
+    }
+
+    public function getAttributes()
+    {
+        $sql = "SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 8 ";
+        $attributes = Ccc::getModel('Core_Eav_Attribute')->fetchAll($sql);
+        return $attributes->getData();
+    }
+
+    public function getAttributeValue($attribute)
+    {
+        if ($this->getId()) {
+            $query = "SELECT `value` FROM `payment_method_{$attribute->backend_type}` WHERE `entity_id` = '{$this->getId()}' AND `attribute_id` = '{$attribute->getId()}'";
+            $row = $this->getResource()->getAdapter()->fetchOne($query);
+            return $row;
+        }
     }
 }
 
