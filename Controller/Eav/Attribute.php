@@ -4,16 +4,31 @@
  */
 class Controller_Eav_Attribute extends Controller_Core_Action
 {
+	public function indexAction()
+	{
+		try {
+			$layout = $this->getLayout();
+			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('core/index.phtml');
+			$layout->getChild('content')->addChild('index',$indexBlock);
+			$layout->render();
+
+		} catch (Exception $e) {
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
+		}
+	}
+
 	public function gridAction()
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Core_Eav_Attribute_Grid');
-			$layout->getChild('content')->addChild('grid',$grid);
-			$layout->render();
+			$grid = $layout->createBlock('Core_Eav_Attribute_Grid')->toHtml();
+			echo json_encode(['html' => $grid, 'element' => 'content-html']);
+			@header("Content-Type:application/json");
 
 		} catch (Exception $e) {
-			echo $e->getMessage();
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
 		}
 	}
 
@@ -22,12 +37,13 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 		try {
 			$layout = $this->getLayout();
 			$EavAttribute = Ccc::getModel('Core_Eav_Attribute');
-			$edit = $layout->createBlock('Core_Eav_Attribute_Edit')->setData(['attribute'=>$EavAttribute]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$edit = $layout->createBlock('Core_Eav_Attribute_Edit')->setData(['attribute'=>$EavAttribute])->toHtml();
+			
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $edit, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
-
 		}
 	}
 
@@ -38,9 +54,10 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$attribute = Ccc::getModel('Core_Eav_attribute')->load($attributeId);
 			$EavAttribute = Ccc::getModel('Core_Eav_Attribute');
-			$edit = $layout->createBlock('Core_Eav_Attribute_Edit')->setData(['attribute'=>$attribute]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$edit = $layout->createBlock('Core_Eav_Attribute_Edit')->setData(['attribute'=>$attribute])->toHtml();
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $edit, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -49,7 +66,6 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 	public function saveAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			if (!Ccc::getModel('Core_Request')->isPost()) {
 				throw new Exception("Invalid request", 1);
 			}
@@ -75,7 +91,7 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 				throw new Exception("attributesAttribute data not saved.", 1);
 			} else {
 				$attributeId = $attribute->attribute_id;
-				if ($attributes['option']) {
+				if (array_key_exists('option',$attributes)) {
 				if (array_key_exists('exist', $attributes['option'])) {
 					$query = "SELECT * FROM `eav_attribute_option` WHERE `attribute_id` = {$attributeId}";
 					$attributeOptionModel = Ccc::getModel('Core_Eav_Attribute_Option');
@@ -105,11 +121,17 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			}
 
 			}
-			$this->getView()->getMessage()->addMessages('data saved Successfully.');
+			$this->getView()->getMessage()->addMessages('data saved successfully.');
+
+			$layout = $this->getLayout();
+			$grid = $layout->createBlock('Core_Eav_Attribute_Grid')->toHtml();
+			
+			echo json_encode(['html' => $grid, 'element' => 'content-html']);
+			@header("Content-Type:application/json");
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-			$this->redirect('grid', null);
 		
 	}
 
@@ -117,7 +139,6 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 	public function deleteAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			$attributeId = Ccc::getModel('Core_Request')->getParam('attribute_id');
 			if (!$attributeId) {
 				throw new Exception("ID not found.", 1);
@@ -130,9 +151,13 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			}
 			$this->getView()->getMessage()->addMessages('Attribute data saved Successfully.');
 
+			$layout = $this->getLayout();
+			$grid = $layout->createBlock('Core_Eav_Attribute_Grid')->toHtml();
+			echo json_encode(['html' => $grid, 'element' => 'content-html']);
+			@header("Content-Type:application/json");
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-		$this->redirect('grid', null, [], true);
 	}
 }

@@ -39,12 +39,14 @@ class Block_Category_Grid extends Block_Core_Grid
 	{
 		$this->addAction('edit',[
 			'title' => 'edit',
-			'method' => 'getEditUrl' 
+			'method' => 'getEditUrl',
+			'primaryKey' => 'category_id' 
 
 		]);
 		$this->addAction('delete',[
 			'title' => 'delete',
-			'method' => 'getDeleteUrl'
+			'method' => 'getDeleteUrl',
+			'primaryKey' => 'category_id' 
 		]);
 
 		return parent::_prepareActions();
@@ -57,16 +59,6 @@ class Block_Category_Grid extends Block_Core_Grid
 			'url' => $this->getUrl('add')
 		]);
 		return parent::_prepareButtons();
-	}
-	
-	public function getEditUrl($row, $key)
-	{
-		return $this->getUrl($key, null, ['category_id' => $row->getId()], true);
-	}
-
-	public function getDeleteUrl($row, $key)
-	{
-		return $this->getUrl($key, null, ['category_id' => $row->getId()], true);
 	}
 
 	public function getCollection()

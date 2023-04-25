@@ -2,12 +2,18 @@
 
 class Controller_Core_Action 
 {
-	public $request = null;
-	public $adapter = null;
-	public $urlObj = null;
-	public $message = null;
-	public $view = null;
-	public $layout = null;
+	protected $request = null;
+	protected $adapter = null;
+	protected $urlObj = null;
+	protected $message = null;
+	protected $view = null;
+	protected $layout = null;
+
+	protected function _setTitle($title)
+	{
+		$this->getLayout()->getChild('head')->setTitle($title);
+		return $this;
+	}
 
 	public function setLayout(Block_Core_Layout $layout)
 	{

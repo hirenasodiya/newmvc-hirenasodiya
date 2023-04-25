@@ -5,12 +5,12 @@ $pathCategories = $category->getParentCategories();
 
 // print_r($pathCategories);
 ?>
-<form action="<?php echo $this->getUrl('save','category', ['category_id' => $category->getId()])?>" method="post">
+<form action="<?php echo $this->getUrl('save','category', ['category_id' => $category->getId()])?>" method="post" id = "category-form">
 
 <div class="d-flex align-items-center justify-content-sm-between">
-	<p class="fw-bolder fs-4">Edit Product</p>
-	<button class="btn btn-dark ms-5">Save</button>
-	<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','category', [], true);?>">cancel</a></div>
+	<p class="fw-bolder fs-4">Edit Category</p>
+	<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('save') ?>').setForm('category-form').call();">Save</button>
+	<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('grid','',[],true) ?>').call();">Cancel</button>
 </div>
 <table class="table table-striped">
 	<tr>

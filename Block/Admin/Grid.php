@@ -36,11 +36,13 @@ class Block_Admin_Grid extends Block_Core_Grid
 	{
 		$this->addAction('edit',[
 			'title' => 'Edit',
-			'method' => 'getEditUrl' 
+			'method' => 'getEditUrl', 
+			'primaryKey' => 'id' 
 		]);
 		$this->addAction('delete',[
 			'title' => 'Delete',
-			'method' => 'getDeleteUrl'
+			'method' => 'getDeleteUrl',
+			'primaryKey' => 'id' 
 		]);
 		
 		return parent::_prepareActions();
@@ -53,16 +55,6 @@ class Block_Admin_Grid extends Block_Core_Grid
 			'url' => $this->getUrl('add')
 		]);
 		return parent::_prepareButtons();
-	}
-
-	public function getEditUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['admin_id' => $row->getId()], true);
-	}
-
-	public function getDeleteUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['admin_id' => $row->getId()], true);
 	}
 
 	public function getCollection()

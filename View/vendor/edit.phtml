@@ -7,11 +7,11 @@ $address = $final[1];
 
 ?>
 
-<form action="<?php echo $this->getUrl('save', 'vendor',); ?>" method="POST">
+<form action="<?php echo $this->getUrl('save', 'vendor', ['vendor_id' => $vendor->getId()]); ?>" method="POST" id="vendor-form">
 <div class="d-flex align-items-center justify-content-sm-between">
 		<p class="fw-bolder fs-4">Edit Vendor</p>
-			<button class="btn btn-dark ms-5">Save</button>
-			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','vendor', [], true);?>">cancel</a></div>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('save') ?>').setForm('vendor-form').call();">Save</button>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('grid','',[],true) ?>').call();">Cancel</button>
 		</div>
 <table class="table table-striped">
 		<tr>

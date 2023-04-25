@@ -2,14 +2,28 @@
 
 class Controller_Vendor extends Controller_Core_Action
 {
+	public function indexAction()
+	{
+		try {
+			$layout = $this->getLayout();
+			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('core/index.phtml');
+			$layout->getChild('content')->addChild('index',$indexBlock);
+			$layout->render();
+
+		} catch (Exception $e) {
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
+		}
+	}
 	public function gridAction()
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Vendor_Grid');
-			// $vendor = $grid->getCollection();
-			$layout->getChild('content')->addChild('grid',$grid);
-			$layout->render();
+			$gridHtml = $layout->createBlock('Vendor_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
@@ -21,9 +35,10 @@ class Controller_Vendor extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$vendor = Ccc::getModel('Vendor');
 			$address = Ccc::getModel('Vendor_Address');
-			$edit = $layout->createBlock('Vendor_Edit')->setData(['vendor'=>$vendor, 'address' => $address]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$edit = $layout->createBlock('Vendor_Edit')->setData(['vendor'=>$vendor, 'address' => $address])->toHtml();
+
+			echo json_encode(['html' => $edit, 'element' => 'content-html']);
+			@header("Content-Type:application/json");
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
@@ -48,19 +63,19 @@ class Controller_Vendor extends Controller_Core_Action
 			if (!$address) {
 				throw new Exception("Data not found", 1);
 			}
-			$edit = $layout->createBlock('Vendor_Edit')->setData(['vendor'=>$vendor, 'address' => $address]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$editHtml = $layout->createBlock('Vendor_Edit')->setData(['vendor'=>$vendor, 'address' => $address])->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid','',[],true);
 		}
 	}
 
 	public function saveAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			if (!Ccc::getModel('Core_Request')->isPost()) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -111,17 +126,21 @@ class Controller_Vendor extends Controller_Core_Action
 			}
 
 			$this->getMessage()->addMessages('Data saved successfully.');
-			$this->redirect('grid', null, [], true);
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Vendor_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
 		}
-			$this->redirect('grid', null, [], true);
 	}
 
 	public function deleteAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			$vendorId = Ccc::getModel('Core_Request')->getParam('vendor_id');
 			if (!$vendorId) {
 				throw new Exception("Invalid id.", 1);
@@ -137,10 +156,14 @@ class Controller_Vendor extends Controller_Core_Action
 			} else {
 				$this->getMessage()->addMessages('Data deleted successfully.');
 			}
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Vendor_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 		}
-		$this->redirect('grid', null, [], true);
 	}
 }
 ?>

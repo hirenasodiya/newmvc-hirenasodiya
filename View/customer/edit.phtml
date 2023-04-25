@@ -6,11 +6,11 @@ $billingAddress = $this->getBillingAddress();
 $shippingAddress = $this->getShippingAddress();
 
 ?>
-<form action="<?php echo $this->getUrl('save','customer', ['customer_id' => $customer->getId()]);?>" method="post">
+<form action="<?php echo $this->getUrl('save','customer', ['customer_id' => $customer->getId()]);?>" method="post" id="customer-form">
 <div class="d-flex align-items-center justify-content-sm-between">
 		<p class="fw-bolder fs-4">Edit Customer</p>
-			<button class="btn btn-dark ms-5">Save</button>
-			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','customer', [], true);?>">cancel</a></div>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('save') ?>').setForm('customer-form').call();">Save</button>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('grid','',[],true) ?>').call();">Cancel</button>
 		</div>
 <table class="table table-striped">
 	<tr>

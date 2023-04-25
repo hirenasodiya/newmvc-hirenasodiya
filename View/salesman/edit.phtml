@@ -4,11 +4,11 @@ $salesman = $final[0];
 $address = $final[1];
 ?>
 
-<form action="<?php echo $this->getUrl('save','salesman'); ?>" method ="POST">
+<form action="<?php echo $this->getUrl('save','salesman',['salesman_id' => $salesman->getId()]); ?>" method ="POST" id="salesman-form">
 <div class="d-flex align-items-center justify-content-sm-between">
 		<p class="fw-bolder fs-4">Edit Salesman</p>
-			<button class="btn btn-dark ms-5">Save</button>
-			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','salesman', [], true);?>">cancel</a></div>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('save') ?>').setForm('salesman-form').call();">Save</button>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('grid','',[],true) ?>').call();">Cancel</button>
 		</div>
 <table class="table table-striped">
 		<tr>

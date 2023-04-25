@@ -2,11 +2,11 @@
 $admin = $this->getAdmin();
 ?>
 
-<form action="<?php echo $this->getUrl('save','admin');?>" method="post">
+<form action="<?php echo $this->getUrl('save','admin', ['id' => $admin->getId()]);?>" method="post" id="admin-form">
 <div class="d-flex align-items-center justify-content-sm-between">
 		<p class="fw-bolder fs-4">Edit Admin</p>
-			<button class="btn btn-dark ms-5">Save</button>
-			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','admin', [], true);?>">cancel</a></div>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('save') ?>').setForm('admin-form').call();">Save</button>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('grid','',[],true) ?>').call();">Cancel</button>
 		</div>
 <table class="table table-striped">
 	<tr>

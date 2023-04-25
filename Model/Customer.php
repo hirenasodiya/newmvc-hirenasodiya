@@ -34,15 +34,21 @@ class Model_Customer extends Model_Core_Table
     public function getBillingAddress() 
     {
         $customerAddress = Ccc::getModel('Customer_Address');
-        $query = "SELECT * FROM `{$customerAddress->getResourceName()}` WHERE `{$customerAddress->getPrimaryKey()}` = '{$this->billing_address_id}'";
-        return $customerAddress->fetchRow($query);
+        if ($this->billing_address_id) {
+            $query = "SELECT * FROM `{$customerAddress->getResourceName()}` WHERE `{$customerAddress->getPrimaryKey()}` = '{$this->billing_address_id}'";
+            return $customerAddress->fetchRow($query);
+        }
+        return null;
     }
 
     public function getShippingAddress()
     {
         $customerAddress = Ccc::getModel('Customer_Address');
-        $query = "SELECT * FROM `{$customerAddress->getResourceName()}` WHERE `{$customerAddress->getPrimaryKey()}` = '{$this->shipping_address_id}'";
-        return $customerAddress->fetchRow($query);
+        if ($this->shipping_address_id) {
+            $query = "SELECT * FROM `{$customerAddress->getResourceName()}` WHERE `{$customerAddress->getPrimaryKey()}` = '{$this->shipping_address_id}'";
+            return $customerAddress->fetchRow($query);
+        }
+        return null;
     }
 
     public function getAddress()
