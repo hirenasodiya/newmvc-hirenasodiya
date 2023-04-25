@@ -13,14 +13,12 @@ class Controller_Paymentmethod extends Controller_Core_Action
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
-
 		}
 	}
 
 	public function gridAction()
 	{
 		try {
-
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('paymentMethod_Grid')->toHtml();
 
@@ -29,7 +27,6 @@ class Controller_Paymentmethod extends Controller_Core_Action
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
-
 		}
 	}
 
@@ -45,8 +42,7 @@ class Controller_Paymentmethod extends Controller_Core_Action
 
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid');
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
 	}
 
@@ -66,11 +62,10 @@ class Controller_Paymentmethod extends Controller_Core_Action
 
 			$editHtml = $layout->createBlock('Paymentmethod_Edit')->setData(['paymentmethod'=>$paymentMethod])->toHtml();
 
-			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
-			@header("Content-Type:application/json");
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
 	}
 
@@ -127,8 +122,7 @@ class Controller_Paymentmethod extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('paymentMethod_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 			} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
@@ -152,11 +146,10 @@ class Controller_Paymentmethod extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('PaymentMethod_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
-			echo $e->getMessage();
+			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
 	}
 }

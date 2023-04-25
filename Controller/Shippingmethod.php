@@ -8,7 +8,7 @@ class Controller_Shippingmethod extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('core/index.phtml');
 			$layout->getChild('content')->addChild('index',$indexBlock);
-			$layout->render();
+			$this->renderLayout();
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
@@ -22,13 +22,10 @@ class Controller_Shippingmethod extends Controller_Core_Action
 
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('shippingMethod_Grid')->toHtml();
-
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
-
 		}
 	}
 
@@ -44,7 +41,6 @@ class Controller_Shippingmethod extends Controller_Core_Action
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid');
 		}
 	}
 
@@ -64,12 +60,10 @@ class Controller_Shippingmethod extends Controller_Core_Action
 
 			$editHtml = $layout->createBlock('shippingMethod_Edit')->setData(['shippingmethod'=>$shippingMethod])->toHtml();
 
-			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
-			@header("Content-Type:application/json");
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid','',[],true);
 		}
 	}
 
@@ -126,12 +120,10 @@ class Controller_Shippingmethod extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('shippingmethod_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 			} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
-
 		}
 	}
 
@@ -153,12 +145,10 @@ class Controller_Shippingmethod extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Shippingmethod_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
-
 		}
 	}
 }

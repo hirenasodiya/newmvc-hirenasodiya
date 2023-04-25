@@ -57,6 +57,9 @@
 				data:this.getParams(),
 			}).done(function (response){
 				$("#" + response.element).html(response.html);
+				if (response.messageBlockHtml !== undefined) {
+					$('#message-html').html(response.messageBlockHtml);
+				}
 			});
 		}
 

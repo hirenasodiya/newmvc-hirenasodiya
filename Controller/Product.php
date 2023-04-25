@@ -18,7 +18,6 @@ class Controller_Product extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
 
@@ -62,8 +61,7 @@ class Controller_Product extends Controller_Core_Action
 
 			$editHtml = $layout->createBlock('Product_Edit')->setData(['product'=>$product])->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
@@ -119,14 +117,13 @@ class Controller_Product extends Controller_Core_Action
 					}
 				}
 			}
-			$this->getMessage()->addMessages("Data save successfully.", Model_Core_Message::SUCCESS);
+			$this->getMessage()->addMessages("Data saved successfully.", Model_Core_Message::SUCCESS);
 
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
-			
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
+
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
@@ -152,8 +149,7 @@ class Controller_Product extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 
 		} catch (Exception $e) {

@@ -3,11 +3,30 @@
 class Controller_Core_Action 
 {
 	protected $request = null;
+	protected $response = null;
 	protected $adapter = null;
 	protected $urlObj = null;
 	protected $message = null;
 	protected $view = null;
 	protected $layout = null;
+
+
+	public function setResponse(Model_Core_Response $response)
+	{
+		$this->response = $response;
+		return $this;
+	}
+
+	public function getResponse()
+	{
+		if(!$this->response){
+			$response = new Model_Core_Response();
+			$response->setController($this);
+			$this->setResponse($response);
+			return $response;
+		}
+			return $this->response;
+	}
 
 	protected function _setTitle($title)
 	{
@@ -137,9 +156,9 @@ class Controller_Core_Action
 		require"View".DS.$templatePath;
 	}
 
-	public function render()
+	public function renderLayout()
 	{
-		Ccc::getModel('Core_View')->render();
+		$this->getResponse()->setBody($this->getLayout()->toHtml());
 	}
 }
 
