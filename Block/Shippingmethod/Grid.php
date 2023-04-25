@@ -38,11 +38,13 @@ class Block_Shippingmethod_Grid extends Block_Core_Grid
 	{
 		$this->addAction('edit',[
 			'title' => 'Edit',
-			'method' => 'getEditUrl' 
+			'method' => 'getEditUrl',
+			'primaryKey' => 'shipping_method_id'
 		]);
 		$this->addAction('delete',[
 			'title' => 'Delete',
-			'method' => 'getDeleteUrl'
+			'method' => 'getDeleteUrl',
+			'primaryKey' => 'shipping_method_id'
 		]);
 		
 		return parent::_prepareActions();
@@ -55,16 +57,6 @@ class Block_Shippingmethod_Grid extends Block_Core_Grid
 			'url' => $this->getUrl('add')
 		]);
 		return parent::_prepareButtons();
-	}
-
-	public function getEditUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['shipping_method_id' => $row->getId()], true);
-	}
-
-	public function getDeleteUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['shipping_method_id' => $row->getId()], true);
 	}
 
 	public function getCollection()

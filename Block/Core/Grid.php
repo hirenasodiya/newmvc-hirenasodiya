@@ -131,6 +131,16 @@ class Block_Core_Grid extends Block_Core_Template
 		return null;
 	}
 
+	public function getEditUrl($row, $key, $primaryKey)
+	{
+		return $this->getUrl($key,'',[ $primaryKey =>$row->getId()]);
+	}
+
+	public function getDeleteUrl($row, $key, $primaryKey)
+	{
+		return $this->getUrl($key,'',[ $primaryKey =>$row->getId()]);
+	}
+
 	protected function _preparebuttons()
 	{
 		return $this;

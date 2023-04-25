@@ -51,15 +51,18 @@ class Block_Salesman_Grid extends Block_Core_Grid
 	{
 		$this->addAction(null,[
 			'title' => 'Prices',
-			'method' => 'getPriceUrl'
+			'method' => 'getPriceUrl',
+			'primaryKey' => 'salesman_id'
 		]);
 		$this->addAction('edit',[
 			'title' => 'Edit',
-			'method' => 'getEditUrl' 
+			'method' => 'getEditUrl',
+			'primaryKey' => 'salesman_id'
 		]);
 		$this->addAction('delete',[
 			'title' => 'Delete',
-			'method' => 'getDeleteUrl'
+			'method' => 'getDeleteUrl',
+			'primaryKey' => 'salesman_id'
 		]);
 		
 		return parent::_prepareActions();
@@ -77,16 +80,6 @@ class Block_Salesman_Grid extends Block_Core_Grid
 	public function getPriceUrl($row, $key)
 	{
 		return  $this->getUrl($key, 'salesman_price' , ['salesman_id' => $row->getId()], true);
-	}
-
-	public function getEditUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['salesman_id' => $row->getId()], true);
-	}
-
-	public function getDeleteUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['salesman_id' => $row->getId()], true);
 	}
 
 	public function getCollection()

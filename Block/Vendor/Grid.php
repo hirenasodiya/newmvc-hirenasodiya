@@ -48,11 +48,13 @@ class Block_Vendor_Grid extends Block_Core_Grid
 	{
 		$this->addAction('edit',[
 			'title' => 'Edit',
-			'method' => 'getEditUrl' 
+			'method' => 'getEditUrl', 
+			'primaryKey' => 'vendor_id' 
 		]);
 		$this->addAction('delete',[
 			'title' => 'Delete',
-			'method' => 'getDeleteUrl'
+			'method' => 'getDeleteUrl',
+			'primaryKey' => 'vendor_id' 
 		]);
 		
 		return parent::_prepareActions();
@@ -65,16 +67,6 @@ class Block_Vendor_Grid extends Block_Core_Grid
 			'url' => $this->getUrl('add')
 		]);
 		return parent::_prepareButtons();
-	}
-
-	public function getEditUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['vendor_id' => $row->getId()], true);
-	}
-
-	public function getDeleteUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['vendor_id' => $row->getId()], true);
 	}
 	
 	public function getCollection()

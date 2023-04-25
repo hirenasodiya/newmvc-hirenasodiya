@@ -24,6 +24,7 @@ class Controller_Core_Front
 
 	public function init()
 	{
+		$sessionStart = Ccc::getModel('Core_Message')->getSession()->start();
 		$request = $this->getRequest();
 		$controllerName = $request->getControllerName();
 		$controllerClassName = 'Controller_'.ucwords($controllerName,'_');

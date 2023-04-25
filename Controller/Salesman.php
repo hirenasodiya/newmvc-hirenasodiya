@@ -3,14 +3,27 @@
 
 class Controller_Salesman extends Controller_Core_Action
 {
+	public function indexAction()
+	{
+		try {
+			$layout = $this->getLayout();
+			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('core/index.phtml');
+			$layout->getChild('content')->addChild('index',$indexBlock);
+			$layout->render();
+
+		} catch (Exception $e) {
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
+		}
+	}
 	public function gridAction()
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Salesman_Grid');
-			// $salesman = $grid->getCollection();
-			$layout->getChild('content')->addChild('grid',$grid);
-			$layout->render();
+			$gridHtml = $layout->createBlock('Salesman_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
@@ -23,9 +36,10 @@ class Controller_Salesman extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$salesman = Ccc::getModel('salesman');
 			$address = Ccc::getModel('salesman_Address');
-			$edit = $layout->createBlock('salesman_Edit')->setData(['salesman'=>$salesman, 'address' => $address]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$edit = $layout->createBlock('salesman_Edit')->setData(['salesman'=>$salesman, 'address' => $address])->toHtml();
+
+			echo json_encode(['html' => $edit, 'element' => 'content-html']);
+			@header("Content-Type:application/json");
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
@@ -50,9 +64,11 @@ class Controller_Salesman extends Controller_Core_Action
 			if (!$address) {
 				throw new Exception("Data not found", 1);
 			}
-			$edit = $layout->createBlock('salesman_Edit')->setData(['salesman'=>$salesman, 'address' => $address]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$editHtml = $layout->createBlock('salesman_Edit')->setData(['salesman'=>$salesman, 'address' => $address])->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
 			$this->redirect('grid','',[],true);
@@ -62,7 +78,6 @@ class Controller_Salesman extends Controller_Core_Action
 	public function saveAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			if (!Ccc::getModel('Core_Request')->isPost()) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -113,17 +128,21 @@ class Controller_Salesman extends Controller_Core_Action
 			}
 
 			$this->getMessage()->addMessages('Data saved successfully.');
-			$this->redirect('grid', null, [], true);
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Salesman_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
 		}
-			$this->redirect('grid', null, [], true);
 	}
 
 	public function deleteAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			$salesmanId = Ccc::getModel('Core_Request')->getParam('salesman_id');
 			if (!$salesmanId) {
 				throw new Exception("Invalid id.", 1);
@@ -141,7 +160,13 @@ class Controller_Salesman extends Controller_Core_Action
 			} else {
 				$this->getMessage()->addMessages('Data deleted successfully.');
 			}
-		$this->redirect('grid', null, [], true);
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Salesman_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
 		}

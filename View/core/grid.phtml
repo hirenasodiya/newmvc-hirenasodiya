@@ -3,12 +3,13 @@ $rows = $this->getCollection();
 // print_r($this->getColumnValue($row, $key));
 // echo "<pre>";
 ?>
+<form id="grid-form" method="post">
 <div class="d-flex align-items-center justify-content-sm-between">
 	<p class="fw-bolder fs-4"><?php echo $this->getTitle(); ?></p>
 	
 	<div class="m-2 mx-2">
 		<?php foreach($this->getButtons() as $key => $button):  ?>
-		<a class="btn btn-dark pull-right" href="<?php echo $button['url']; ?>"><?php echo $button['title']; ?></a>
+		<a class="btn btn-dark pull-right" onclick="ajax.setUrl('<?php echo $button['url'] ?>').call()"><?php echo $button['title']; ?></a>
 		<?php endforeach; ?>
 	</div>
 	
@@ -33,12 +34,13 @@ $rows = $this->getCollection();
 				<td><?php echo $this->getColumnValue($row, $key);?></td>
 				<?php endforeach; ?>
 
-				<?php foreach($this->getActions() as $key => $action):  ?>
-				<td><a href="<?php $method = $action['method']; echo $this->$method($row, $key); ?>"><?php echo $action['title']; ?></a></td>
+				<?php foreach($this->getActions() as $key => $action): ?>
+				<td>
+					<input name="add" value="<?php echo $action['title']; ?>" type="button" onclick="ajax.setUrl('<?php $method = $action['method']; echo $this->$method($row, $key, $action['primaryKey']);?>').call()">
+				</td>
 				<?php endforeach; ?>
 			</tr>
 		<?php endforeach; ?>
 		<?php endif; ?>
 	</table>
-</body>
-</html>
+</form>

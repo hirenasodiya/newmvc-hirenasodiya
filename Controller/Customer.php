@@ -2,17 +2,32 @@
 
 class Controller_Customer extends Controller_Core_Action
 {
-	public function gridAction()
+	public function indexAction()
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('customer_Grid');
-			// $customer = $grid->getCollection();
-			$layout->getChild('content')->addChild('grid',$grid);
+			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('core/index.phtml');
+			$layout->getChild('content')->addChild('index',$indexBlock);
 			$layout->render();
 
 		} catch (Exception $e) {
-			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
+		}
+	}
+	public function gridAction()
+	{
+		try {
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Customer_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+
+		} catch (Exception $e) {
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+
 		}
 	}
 
@@ -24,9 +39,10 @@ class Controller_Customer extends Controller_Core_Action
 			$billingAddress = Ccc::getModel('Customer_Address');
 			$shippingAddress = Ccc::getModel('Customer_Address');
 
-			$edit = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'billingAddress' => $billingAddress, 'shippingAddress' => $shippingAddress]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$edit = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'billingAddress' => $billingAddress, 'shippingAddress' => $shippingAddress])->toHtml();
+
+			echo json_encode(['html' => $edit, 'element' => 'content-html']);
+			@header("Content-Type:application/json");
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
@@ -36,7 +52,6 @@ class Controller_Customer extends Controller_Core_Action
 	public function editAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			$customerId = (int) Ccc::getModel('Core_Request')->getParam('customer_id');
 			if (!$customerId) {
 				throw new Exception("Invalid ID", 1);
@@ -58,9 +73,11 @@ class Controller_Customer extends Controller_Core_Action
 				throw new Exception("Data not found", 1);
 			}
 
-			$edit = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'billingAddress' => $billingAddress, 'shippingAddress' => $shippingAddress]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$editHtml = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'billingAddress' => $billingAddress, 'shippingAddress' => $shippingAddress])->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
@@ -69,7 +86,6 @@ class Controller_Customer extends Controller_Core_Action
 	public function saveAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			if (!Ccc::getModel('Core_Request')->isPost()) {
 				throw new Exception("Invalid request.", 1);
 			}
@@ -88,10 +104,15 @@ class Controller_Customer extends Controller_Core_Action
 			}
 
 			$this->getView()->getMessage()->addMessages('Customer data saved Successfully.');
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Customer_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
 		}
-		$this->redirect('grid', null, [], true);
 	}
 
 	public function _saveCustomer()
@@ -188,35 +209,35 @@ class Controller_Customer extends Controller_Core_Action
 	public function deleteAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
-			$customerId = Ccc::getModel('Core_Request')->getParam('id');
-			echo "<pre>";
+			$customerId = Ccc::getModel('Core_Request')->getParam('customer_id');
 			if (!$customerId) {
 				throw new Exception("ID not found.", 1);
 			}
 
 			$customer = Ccc::getModel('Customer')->load($customerId);
 			$result = $customer->delete();
-			print_r($result);
 			if (!$result) {
 				throw new Exception("Customer data not deleted.", 1);
 			}
 
 			$address = Ccc::getModel('Customer_Address')->load($customerId);
 			$result = $address->delete();
-			print_r($result);
-			die;
 			if (!$result) {
 				throw new Exception("Address data not deleted.", 1);
 			} else {
 				$this->getView()->getMessage()->addMessages('Customer data deleted Successfully.');
 			}
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Customer_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
 			
 		} catch (Exception $e) {
 			$this->getView()->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
 		
-		$this->redirect('grid', null, [], true);
 	}
 }
 

@@ -6,7 +6,6 @@
 class Block_Core_Template extends Model_Core_View
 {
 	protected $children = [];
-
 	protected $layout = null;
 
 	public function setLayout(Block_Core_Layout $layout)
@@ -57,6 +56,23 @@ class Block_Core_Template extends Model_Core_View
 			unset($this->children);
 		}
 		return $this;
+	}
+
+	public function getChildHtml($key)
+	{
+		if ($child = $this->getChild($key)) {
+			return $child->toHtml();
+		}
+		return null;
+	}
+
+	public function toHtml()
+	{
+		ob_start();
+		$this->render();
+		$content = ob_get_contents();
+		ob_end_clean();
+		return $content;
 	}
 
 }

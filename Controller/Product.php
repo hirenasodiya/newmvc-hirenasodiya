@@ -2,18 +2,31 @@
 
 class Controller_Product extends Controller_Core_Action
 {
-	public function gridAction()
+	public function indexAction()
 	{
 		try {
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Product_Grid');
-			// $product = $grid->getCollection();
-			$layout->getChild('content')->addChild('grid',$grid);
+			$indexBlock = $layout->createBlock('Core_Template')->setTemplate('core/index.phtml');
+			$layout->getChild('content')->addChild('index',$indexBlock);
 			$layout->render();
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
+		}
+	}
 
+	public function gridAction()
+	{
+		try {
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+
+		} catch (Exception $e) {
+			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
 	}
 
@@ -22,9 +35,10 @@ class Controller_Product extends Controller_Core_Action
 		try {
 			$layout = $this->getLayout();
 			$product = Ccc::getModel('Product');
-			$edit = $layout->createBlock('Product_Edit')->setData(['product'=>$product]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$addHtml = $layout->createBlock('Product_Edit')->setData(['product'=>$product])->toHtml();
+
+			echo json_encode(['html' => $addHtml, 'element' => 'content-html']);
+			@header("Content-Type:application/json");
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
@@ -46,28 +60,29 @@ class Controller_Product extends Controller_Core_Action
 				throw new Exception("Invalid Request", 1);
 			}
 
-			$edit = $layout->createBlock('Product_Edit')->setData(['product'=>$product]);
-			$layout->getChild('content')->addChild('edit',$edit);
-			$layout->render();
+			$editHtml = $layout->createBlock('Product_Edit')->setData(['product'=>$product])->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
-			$this->redirect('grid','',[],true);
 	}
 
 	public function saveAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
+
 			if (!Ccc::getModel('Core_Request')->isPost()) {
 				throw new Exception("Invalid request", 1);
 			}
 
-			$products = Ccc::getModel('Core_Request')->getPost('product');
+			$products = $this->getRequest()->getPost('product');
 			if (!$products) {
 				throw new Exception("Invalid data", 1);
 			}
+
 
 			$productId = Ccc::getModel('Core_Request')->getParam('product_id');
 			if ($productId) {
@@ -87,17 +102,40 @@ class Controller_Product extends Controller_Core_Action
 			if (!$final) {
 				throw new Exception("Data not saved", 1);
 			}
+			else{
+				$attributePost = Ccc::getModel('Core_Request')->getPost('attribute');
+
+				foreach ($attributePost as $backendType => $value) {
+					foreach ($value as $attributeId => $v) {
+						if (is_array($v)) {
+							$v = implode(",", $v);
+						}
+
+						$model = Ccc::getModel('Core_table');
+						$resource = $model->getResource()->setResourceName("product_{$backendType}")->setPrimaryKey('value_id');
+						$query = "INSERT INTO `product_{$backendType}` (`entity_id`,`attribute_id`,`value`) VALUES('{$product->getId()}','{$attributeId}','{$v}') ON DUPLICATE KEY UPDATE `value` ='{$v}'";
+
+						$model->getResource()->getAdapter()->query($query);
+					}
+				}
+			}
 			$this->getMessage()->addMessages("Data save successfully.", Model_Core_Message::SUCCESS);
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			
+
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
-			$this->redirect('grid', null);
 		
 	}
 	public function deleteAction()
 	{
 		try {
-			Ccc::getModel('Core_Session')->start();
 			$id =  Ccc::getModel('Core_Request')->getParam('product_id');
 			if (!$id) {
 				throw new Exception("Id not found", 1);
@@ -109,12 +147,18 @@ class Controller_Product extends Controller_Core_Action
 				throw new Exception("Deletion failed", 1);
 			}
 			$this->getMessage()->addMessages('Data deleted successfully');
-			$this->redirect('grid', null, null, true);
+
+
+			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
+
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
 		}
-		$this->redirect('grid',null,[],true);
 	}
 }
 

@@ -30,6 +30,22 @@ class Model_Product extends Model_Core_Table
 
         return $statuses[self::STATUS_DEFAULT];
     }
+
+    public function getAttributes()
+    {
+        $sql = "SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 1 ";
+        $attributes = Ccc::getModel('Core_Eav_Attribute')->fetchAll($sql);
+        return $attributes->getData();
+    }
+
+    public function getAttributeValue($attribute)
+    {
+        if ($this->getId()) {
+            $query = "SELECT `value` FROM `product_{$attribute->backend_type}` WHERE `entity_id` = '{$this->getId()}' AND `attribute_id` = '{$attribute->getId()}'";
+            $row = $this->getResource()->getAdapter()->fetchOne($query);
+            return $row;
+        }
+    }
 }
 
 ?>

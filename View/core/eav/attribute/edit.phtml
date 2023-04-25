@@ -10,11 +10,11 @@ $entityTypes = $this->getEntityType();
 // print_r($attribute);
 
 ?>
-<form action="<?php echo $this->getUrl('save', 'eav_attribute', ['attribute_id' => $attribute->getId()]) ?>" method="post">
+<form action="<?php echo $this->getUrl('save', 'eav_attribute', ['attribute_id' => $attribute->getId()]) ?>" method="post" id="eav-form">
 	<div class="d-flex align-items-center justify-content-sm-between">
 		<p class="fw-bolder fs-4">Edit Attributes</p>
-			<button class="btn btn-dark ms-5">Save</button>
-			<div class="m-2 mx-2"><a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('grid','eav_attribute', [], true);?>">cancel</a></div>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('save') ?>').setForm('eav-form').call();">Save</button>
+            <button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('grid','',[],true) ?>').call();">Cancel</button>
 		</div>
 <table class="table table-striped">
 	<thead>

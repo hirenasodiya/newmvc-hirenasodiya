@@ -5,10 +5,13 @@ class Block_Product_Grid extends Block_Core_Grid
 	public function __construct()
 	{
 		parent::__construct();
-		$this->setTitle('Manage Product');
+        $this->prePareColumns();
+        $this->prePareActions();
+        $this->prePareButtons();
+        $this->setTitle('Manage Product');
 	}
 
-	protected function _prepareColumns()
+	protected function prepareColumns()
 	{
 		$this->addColumn('product_id',[
 			'title' => 'product Id',
@@ -59,26 +62,29 @@ class Block_Product_Grid extends Block_Core_Grid
 		return parent::_prepareColumns();
 	}
 
-	protected function _prepareActions()
+	protected function prepareActions()
 	{
 		$this->addAction(null,[
 			'title' => 'Media',
-			'method' => 'getMediaUrl' 
+			'method' => 'getMediaUrl', 
+			'primaryKey' => 'product_id'
 		]);
 		$this->addAction('edit',[
 			'title' => 'Edit',
-			'method' => 'getEditUrl' 
+			'method' => 'getEditUrl',
+			'primaryKey' => 'product_id'
 		]);
 		$this->addAction('delete',[
 			'title' => 'Delete',
-			'method' => 'getDeleteUrl'
+			'method' => 'getDeleteUrl',
+			'primaryKey' => 'product_id'
 		]);
 
 		
 		return parent::_prepareActions();
 	}
 
-	protected function _preparebuttons()
+	protected function preparebuttons()
 	{
 		$this->addButton('product',[
 			'title' => 'Add New',
@@ -89,18 +95,9 @@ class Block_Product_Grid extends Block_Core_Grid
 
 	public function getMediaUrl($row, $key)
 	{
-		return  $this->getUrl($key, 'product_media' , ['product_id' => $row->getId()], true);
+		return  $this->getUrl($key, 'product_media' , ['product_id' => $row->getId()]);
 	}
 
-	public function getEditUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['product_id' => $row->getId()], true);
-	}
-
-	public function getDeleteUrl($row, $key)
-	{
-		return  $this->getUrl($key, null , ['product_id' => $row->getId()], true);
-	}
 
 	public function getCollection()
 	{
