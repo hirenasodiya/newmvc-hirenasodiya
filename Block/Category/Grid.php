@@ -63,8 +63,16 @@ class Block_Category_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$sql = "SELECT * FROM `category`";
-		$category = Ccc::getModel('Category')->fetchAll($sql);
-		return $category;
+		$query = "SELECT count('category_id') FROM `category`";
+		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+
+		$currentPage = Ccc::getModel('Core_Request')->getParam('p');
+		$pager = $this->getPager();
+		$pager->calculate($totalRecord, $currentPage);
+		$this->setPager($pager);
+
+		$query = "SELECT * FROM `category` LIMIT $pager->startLimit, $pager->recordPerPage";
+		$categorys = Ccc::getModel('category')->fetchAll($query);
+		return $categorys;
 	}
 }

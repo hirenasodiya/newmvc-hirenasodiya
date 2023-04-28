@@ -65,13 +65,10 @@ class Controller_Salesman extends Controller_Core_Action
 				throw new Exception("Data not found", 1);
 			}
 			$editHtml = $layout->createBlock('salesman_Edit')->setData(['salesman'=>$salesman, 'address' => $address])->toHtml();
-
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid','',[],true);
 		}
 	}
 
@@ -132,8 +129,7 @@ class Controller_Salesman extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Salesman_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
@@ -164,8 +160,7 @@ class Controller_Salesman extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Salesman_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 			
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  

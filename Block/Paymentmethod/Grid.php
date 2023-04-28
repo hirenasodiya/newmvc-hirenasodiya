@@ -56,9 +56,13 @@ class Block_Paymentmethod_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `payment_method`";
-		$paymentMethods = Ccc::getModel('Paymentmethod')->fetchAll($query);
-		return $paymentMethods;	
+		$query = "SELECT count('payment_method_id') FROM `payment_method` ORDER BY `payment_method_id` DESC";
+		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+		$this->getPager()->setTotalRecord($totalRecord)->calculate();
+
+		$query = "SELECT * FROM `payment_method` ORDER BY `payment_method_id` DESC LIMIT {$this->getPager()->getStartLimit()},{$this->getPager()->getRecordPerPage()}";
+		$payment_methods = Ccc::getModel('paymentmethod')->fetchAll($query);
+		return $payment_methods;	
 	}
 
 }

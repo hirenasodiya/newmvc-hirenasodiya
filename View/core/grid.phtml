@@ -1,7 +1,5 @@
 <?php  
 $rows = $this->getCollection();
-// print_r($this->getColumnValue($row, $key));
-// echo "<pre>";
 ?>
 <form id="grid-form" method="post">
 <div class="d-flex align-items-center justify-content-sm-between">
@@ -11,6 +9,8 @@ $rows = $this->getCollection();
 		<?php foreach($this->getButtons() as $key => $button):  ?>
 		<a class="btn btn-dark pull-right" onclick="ajax.setUrl('<?php echo $button['url'] ?>').call()"><?php echo $button['title']; ?></a>
 		<?php endforeach; ?>
+		<a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('export'); ?>">Export</a>
+		<a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('import'); ?>">Import</a>
 	</div>
 	
 </div>
@@ -43,4 +43,67 @@ $rows = $this->getCollection();
 		<?php endforeach; ?>
 		<?php endif; ?>
 	</table>
+	<?php 
+      $serialize_user_arr = serialize($user_arr);
+      ?>
+  <textarea name='export_data' style='display: none;'><?php echo $serialize_user_arr; ?></textarea>
+
+
+
+	<div class="d-flex justify-content-center">
+		<?php $pager = $this->getPager(); ?>
+	<nav aria-label="...">
+  <ul class="pagination">
+  	<li class="page-item " <?php if ($pager->getStart() == 0) {
+      	echo "style='pointer-events:none'";
+      } ?>>
+      <a class="page-link" onclick="ajax.setUrl('<?php echo $this->getUrl('grid', '', ['p' => $pager->getStart()]) ?>').call()">Start</a>
+    </li>
+
+    <li class="page-item ">
+      <a class="page-link" <?php if ($pager->getPrevious() == 0) {
+      	echo "style='pointer-events:none'";
+      } ?> onclick="ajax.setUrl('<?php echo $this->getUrl('grid', '', ['p' => $pager->getPrevious()], true) ?>').call()">Previous</a>
+    </li>
+   
+    <li class="page-item active">
+      <a class="page-link" onclick="ajax.setUrl('<?php echo $this->getUrl('grid', '', ['p' => $pager->getCurrentPage()], true) ?>').call()"><span class="sr-only"><?php echo  $pager->getCurrentPage(); ?></span></a>
+    </li>
+    
+    <li class="page-item">
+      <a class="page-link" <?php if ($pager->getNext() == 0) {
+      	echo "style='pointer-events:none'";
+      } ?> onclick="ajax.setUrl('<?php echo $this->getUrl('grid', '', ['p' => $pager->getNext()], true) ?>').call()">Next</a>
+    </li>
+
+    <li class="page-item" >
+      <a class="page-link" <?php if ($pager->getEnd() == 0) {
+      	echo "style='pointer-events:none'";
+      } ?>  onclick="ajax.setUrl('<?php echo $this->getUrl('grid', '', ['p' => $pager->getEnd()], true) ?>').call()">End</a>
+    </li>
+  </ul>
+</nav>
+</div>
 </form>
+
+<form action="<?php echo $this->getUrl('grid'); ?>" method="post" id="rrp-dropdown">
+	<div>
+		<label>Show No Records:</label>
+		<select id="selectrrp" name="selectrrp">
+			<?php foreach($pager->recordPerPageOptions as $values): ?>
+			<option id="option" value="<?php echo $values; ?>"
+				<?php echo ($pager->getRecordPerPage() == $values)? 'selected' : ''; ?>>
+				<?php echo $values; ?>
+			</option>
+		<?php endforeach; ?>
+		</select>
+	</div>
+</form>
+
+<script type="text/javascript">
+	
+	$('#selectrrp').change(function (){
+		var value = this.value;
+		ajax.setForm('rrp-dropdown').call();
+	});
+</script>

@@ -74,9 +74,7 @@ class Controller_Customer extends Controller_Core_Action
 			}
 
 			$editHtml = $layout->createBlock('customer_Edit')->setData(['customer'=>$customer, 'billingAddress' => $billingAddress, 'shippingAddress' => $shippingAddress])->toHtml();
-
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
@@ -108,8 +106,7 @@ class Controller_Customer extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Customer_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
 		}
@@ -210,30 +207,23 @@ class Controller_Customer extends Controller_Core_Action
 	{
 		try {
 			$customerId = Ccc::getModel('Core_Request')->getParam('customer_id');
+
 			if (!$customerId) {
 				throw new Exception("ID not found.", 1);
 			}
-
 			$customer = Ccc::getModel('Customer')->load($customerId);
 			$result = $customer->delete();
 			if (!$result) {
 				throw new Exception("Customer data not deleted.", 1);
 			}
 
-			$address = Ccc::getModel('Customer_Address')->load($customerId);
-			$result = $address->delete();
-			if (!$result) {
-				throw new Exception("Address data not deleted.", 1);
-			} else {
-				$this->getView()->getMessage()->addMessages('Customer data deleted Successfully.');
-			}
+			$this->getView()->getMessage()->addMessages('Customer data deleted Successfully.');
 
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Customer_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
-			
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
+
 		} catch (Exception $e) {
 			$this->getView()->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}

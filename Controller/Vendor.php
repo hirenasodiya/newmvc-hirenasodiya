@@ -42,7 +42,6 @@ class Controller_Vendor extends Controller_Core_Action
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
-			$this->redirect('grid');
 		}
 	}
 
@@ -64,9 +63,7 @@ class Controller_Vendor extends Controller_Core_Action
 				throw new Exception("Data not found", 1);
 			}
 			$editHtml = $layout->createBlock('Vendor_Edit')->setData(['vendor'=>$vendor, 'address' => $address])->toHtml();
-
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->add($e->getMessage(),Model_Core_Message::FAILURE);
@@ -129,9 +126,7 @@ class Controller_Vendor extends Controller_Core_Action
 
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Vendor_Grid')->toHtml();
-
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
@@ -158,11 +153,10 @@ class Controller_Vendor extends Controller_Core_Action
 			}
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Vendor_Grid')->toHtml();
-
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
+			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);  
 		}
 	}
 }
