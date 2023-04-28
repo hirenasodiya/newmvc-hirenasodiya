@@ -6,7 +6,25 @@ class Block_Core_Grid extends Block_Core_Template
 	protected $_actions = [];
 	protected $_buttons = [];
 	protected $_title = null;
+	protected $pager = null;
+	
+	public function setPager($pager)
+	{
+		$this->pager = $pager;
+		return $this;
+	}
 
+	public function getPager()
+	{
+		if ($this->pager) {
+			return $this->pager;
+		}
+
+		$pager = new Model_Core_Pager();
+		$this->setPager($pager);
+		return $pager;
+	}
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -156,9 +174,6 @@ class Block_Core_Grid extends Block_Core_Template
 	{
 		return $this->_title;
 	}
-
-
-
 
 }
 

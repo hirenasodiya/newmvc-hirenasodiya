@@ -8,7 +8,7 @@ $attributes = $this->getAttributes();
 <div class="d-flex align-items-center justify-content-sm-between">
 		<p class="fw-bolder fs-4">Edit Shippingmethod</p>
 			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('save') ?>').setForm('shippingmethod-form').call();">Save</button>
-			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('grid','',[],true) ?>').call();">Cancel</button>
+			<button class="btn btn-dark ms-5" type="button" onclick="ajax.setUrl('<?php echo $this->getUrl('grid') ?>').call();">Cancel</button>
 		</div>
 <table class="table table-striped">
 		<tr>

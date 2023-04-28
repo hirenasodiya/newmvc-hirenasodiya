@@ -66,8 +66,7 @@ class Controller_Admin extends Controller_Core_Action
 
 			$editHtml = $layout->createBlock('admin_Edit')->setData(['admin'=>$admin])->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
@@ -115,14 +114,12 @@ class Controller_Admin extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Admin_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_Message')->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 
 		}
-			// $this->redirect('grid', null, null, true);
 	}
 
 	public function deleteAction()
@@ -142,13 +139,10 @@ class Controller_Admin extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Admin_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
-
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-		// $this->redirect('grid',null,[],true);
 	}
 }

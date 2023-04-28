@@ -7,6 +7,7 @@ class Block_Core_Template extends Model_Core_View
 {
 	protected $children = [];
 	protected $layout = null;
+	
 
 	public function setLayout(Block_Core_Layout $layout)
 	{

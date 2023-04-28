@@ -66,8 +66,7 @@ class Controller_Category extends Controller_Core_Action
 
 			$editHtml = $layout->createBlock('category_Edit')->setData(['category'=>$category])->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $editHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $editHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			Ccc::getModel('Core_View')->getMessage()->addMessages($e->getMessage(),Model_Core_Message::FAILURE);
@@ -113,13 +112,11 @@ class Controller_Category extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Category_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 			} catch (Exception $e) {
 			$this->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-			// $this->redirect('grid', null);
 	}
 	public function deleteAction()
 	{
@@ -139,13 +136,11 @@ class Controller_Category extends Controller_Core_Action
 			$layout = $this->getLayout();
 			$gridHtml = $layout->createBlock('Category_Grid')->toHtml();
 
-			@header("Content-Type:application/json");
-			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
+			$this->getResponse()->jsonResponse(['html' => $gridHtml, 'element' => 'content-html']);
 
 		} catch (Exception $e) {
 			$this->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
 		}
-		// $this->redirect('grid',null,[],true);
 	}
 } 
 

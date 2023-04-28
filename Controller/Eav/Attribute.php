@@ -53,6 +53,8 @@ class Controller_Eav_Attribute extends Controller_Core_Action
 			$attributeId = (int) Ccc::getModel('Core_Request')->getParam('attribute_id');
 			$layout = $this->getLayout();
 			$attribute = Ccc::getModel('Core_Eav_attribute')->load($attributeId);
+			// echo "<pre>";
+			// print_r($attribute);
 			$EavAttribute = Ccc::getModel('Core_Eav_Attribute');
 			$edit = $layout->createBlock('Core_Eav_Attribute_Edit')->setData(['attribute'=>$attribute])->toHtml();
 			@header("Content-Type:application/json");

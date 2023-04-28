@@ -2,6 +2,31 @@
 
 class Controller_Product extends Controller_Core_Action
 {
+	public function importAction()
+	{
+		$layout = $this->getLayout();
+		$grid = $layout->createBlock('Product_Import');
+		$layout->getChild('content')->addChild('grid',$grid);
+		$layout->render();
+	}	
+
+	public function uploadAction()
+	{
+		try {
+			$upload = new Model_Core_File_Upload();
+			$upload->setExtensions(['png','csv'])
+				->setPath('test')
+				->setFileName('test')
+				->upload('csv-file');
+
+			$csv = new Model_Core_File_Csv();
+			$data = $csv->setPath('test')->setFileName($upload->getFileName())->read()->getRows();
+
+		} catch (Exception $e) {
+			
+		}
+	}
+
 	public function indexAction()
 	{
 		try {
@@ -18,9 +43,15 @@ class Controller_Product extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Product_Grid')->toHtml();
+ 			$layout = $this->getLayout();
+			$gridHtml = $layout->createBlock('Product_Grid');
+			if ($this->getRequest()->isPost()) {
+				if ($recordPerPage = (int) $this->getRequest()->getPost('selectrrp')) {
+					$gridHtml->getPager()->setRecordPerPage($recordPerPage);
+				}
+			}
 
+			$gridHtml = $gridHtml->tohtml();
 			@header("Content-Type:application/json");
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
 
