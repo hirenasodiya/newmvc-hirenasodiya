@@ -72,8 +72,12 @@ class Block_Customer_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$sql = "SELECT * FROM `customer`";
-		$customer = Ccc::getModel('Customer')->fetchAll($sql);
-		return $customer;
+		$query = "SELECT count('customer_id') FROM `customer` ORDER BY `customer_id` DESC";
+		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+		$this->getPager()->setTotalRecord($totalRecord)->calculate();
+
+		$query = "SELECT * FROM `customer` ORDER BY `customer_id` DESC LIMIT {$this->getPager()->getStartLimit()},{$this->getPager()->getRecordPerPage()}";
+		$customers = Ccc::getModel('customer')->fetchAll($query);
+		return $customers;	
 	}
 }

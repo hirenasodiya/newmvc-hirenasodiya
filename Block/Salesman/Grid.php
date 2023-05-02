@@ -84,8 +84,12 @@ class Block_Salesman_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$sql = "SELECT * FROM `salesman`";
-		$salesman = Ccc::getModel('Salesman')->fetchAll($sql);
-		return $salesman;
+		$query = "SELECT count('salesman_id') FROM `salesman` ORDER BY `salesman_id` DESC";
+		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+		$this->getPager()->setTotalRecord($totalRecord)->calculate();
+
+		$query = "SELECT * FROM `salesman` ORDER BY `salesman_id` DESC LIMIT {$this->getPager()->getStartLimit()},{$this->getPager()->getRecordPerPage()}";
+		$salesmans = Ccc::getModel('salesman')->fetchAll($query);
+		return $salesmans;	
 	}
 }

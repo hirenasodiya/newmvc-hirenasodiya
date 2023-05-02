@@ -37,7 +37,10 @@ class Model_Paymentmethod extends Model_Core_Table
     {
         $sql = "SELECT * FROM `eav_attribute` WHERE `entity_type_id` = 8 ";
         $attributes = Ccc::getModel('Core_Eav_Attribute')->fetchAll($sql);
-        return $attributes->getData();
+        if ($attributes) {
+            return $attributes->getData();
+        }
+        return Ccc::getModel('Core_Eav_Attribute');
     }
 
     public function getAttributeValue($attribute)

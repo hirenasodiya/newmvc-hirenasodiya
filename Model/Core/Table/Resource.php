@@ -113,6 +113,23 @@ class Model_Core_Table_Resource
 		$row = $this->getAdapter()->fetchRow($query);
 		return $row;	
 	}
+
+	public function insertUpdateOnDuplicate($data, $uniqueColumns)
+	{
+		$keyString = '`'.implode('`,`', array_keys($data)).'`';
+		$valueString = "'".implode("','", array_values($data))."'";
+
+		$keys = array_keys($uniqueColumns);
+		$keyValue = "";
+		for ($i=0; $i < count($uniqueColumns) ; $i++) { 
+			$keyValue .= "`".$keys[$i]."`="."'".$uniqueColumns[$keys[$i]]."',";
+		}
+
+		$keyValue = rtrim($keyValue, ",");
+
+		$sql = "INSERT INTO `{$this->getResourceName()}` ({$keyString}) VALUES ({$valueString}) ON DUPLICATE KEY UPDATE $keyValue; ";
+		return $this->getAdapter()->query($sql);
+	}
 }
 
 

@@ -57,11 +57,14 @@ class Block_Item_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$query = "SELECT * FROM `item` WHERE 1";
+		$query = "SELECT count('entity_id') FROM `item` ORDER BY `entity_id` DESC";
+		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+		$this->getPager()->setTotalRecord($totalRecord)->calculate();
+
+		$query = "SELECT * FROM `item` ORDER BY `entity_id` DESC LIMIT {$this->getPager()->getStartLimit()},{$this->getPager()->getRecordPerPage()}";
 		$items = Ccc::getModel('item')->fetchAll($query);
 		return $items;	
 	}
-
 }
 
 

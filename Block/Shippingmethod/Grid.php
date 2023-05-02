@@ -61,16 +61,12 @@ class Block_Shippingmethod_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$query = "SELECT count('shipping_method_id') FROM `shipping_method`";
+		$query = "SELECT count('shipping_method_id') FROM `shipping_method` ORDER BY `shipping_method_id` DESC";
 		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+		$this->getPager()->setTotalRecord($totalRecord)->calculate();
 
-		$currentPage = Ccc::getModel('Core_Request')->getParam('p');
-		$pager = $this->getPager();
-		$pager->calculate($totalRecord, $currentPage);
-		$this->setPager($pager);
-
-		$query = "SELECT * FROM `shipping_method` LIMIT $pager->startLimit, $pager->recordPerPage";
-		$shippingmethods = Ccc::getModel('shippingmethod')->fetchAll($query);
-		return $shippingmethods;	
+		$query = "SELECT * FROM `shipping_method` ORDER BY `shipping_method_id` DESC LIMIT {$this->getPager()->getStartLimit()},{$this->getPager()->getRecordPerPage()}";
+		$shipping_methods = Ccc::getModel('shippingmethod')->fetchAll($query);
+		return $shipping_methods;	
 	}
 }

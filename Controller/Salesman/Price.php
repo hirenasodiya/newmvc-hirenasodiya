@@ -5,7 +5,6 @@ class Controller_Salesman_Price extends Controller_Core_Action
 	public function gridAction()
 	{
 	try {
-		// echo "<pre>";
 		$salesmanId = Ccc::getModel('Core_Request')->getParam('salesman_id');
 
 			if (!$salesmanId) {
@@ -14,11 +13,14 @@ class Controller_Salesman_Price extends Controller_Core_Action
 			Ccc::register('salesman_id',$salesmanId);
 
 			$layout = $this->getLayout();
-			$grid = $layout->createBlock('Salesman_Salesmanprice_Grid');
-			$prices = $grid->getPrices()->getData();
+			$gridHtml = $layout->createBlock('Salesman_Salesmanprice_Grid');
+			// $prices = $grid->getPrices()->getData();
 			// print_r($prices);
-			$layout->getChild('content')->addChild('grid',$grid);
-			$layout->render();
+			// $layout->getChild('content')->addChild('grid',$grid);
+			// $layout->render();
+			$gridHtml = $gridHtml->tohtml();
+			@header("Content-Type:application/json");
+			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
 			
 		} catch (Exception $e) {
 			$this->getMessage()->addMessages($e->getMessage(), Model_Core_Message::FAILURE);
@@ -78,7 +80,6 @@ class Controller_Salesman_Price extends Controller_Core_Action
 	public function deleteAction()
 	{
 		try {
-			// echo "<pre>";
 			Ccc::getModel('Core_Session')->start();
 			$salesmanId = $this->getRequest()->getParam('salesman_id');
 			if (!$salesmanId) {

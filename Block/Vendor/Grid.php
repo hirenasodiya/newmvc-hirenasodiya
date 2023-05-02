@@ -71,8 +71,12 @@ class Block_Vendor_Grid extends Block_Core_Grid
 	
 	public function getCollection()
 	{
-		$sql = "SELECT * FROM `Vendor`";
-		$vendor = Ccc::getModel('Vendor')->fetchAll($sql);
-		return $vendor;
+		$query = "SELECT count('vendor_id') FROM `vendor` ORDER BY `vendor_id` DESC";
+		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+		$this->getPager()->setTotalRecord($totalRecord)->calculate();
+
+		$query = "SELECT * FROM `vendor` ORDER BY `vendor_id` DESC LIMIT {$this->getPager()->getStartLimit()},{$this->getPager()->getRecordPerPage()}";
+		$vendors = Ccc::getModel('vendor')->fetchAll($query);
+		return $vendors;	
 	}
 }

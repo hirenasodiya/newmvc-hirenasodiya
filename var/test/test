@@ -1,0 +1,5 @@
+product_id,name,SKU,cost,price,quantity,description,status,color,material,created_at,updated_at,base,thumbnail,small
+528,name-1,1,500,450,20,xyz,1,black,hard,01-05-2023 09:41,NULL,NULL,NULL,NULL
+529,name-2,2,500,450,20,xyz,1,black,hard,01-05-2023 09:41,NULL,NULL,NULL,NULL
+530,name-3,3,500,450,20,xyz,1,black,hard,01-05-2023 09:41,NULL,NULL,NULL,NULL
+531,name-4,3,500,450,20,xyz,1,black,hard,01-05-2023 09:41,NULL,NULL,NULL,NULL
