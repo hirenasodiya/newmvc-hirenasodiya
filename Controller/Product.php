@@ -2,15 +2,42 @@
 
 class Controller_Product extends Controller_Core_Action
 {
-	public function importAction()
+	public function exportAction()
 	{
-		$layout = $this->getLayout();
-		$grid = $layout->createBlock('Product_Import');
-		$layout->getChild('content')->addChild('grid',$grid);
-		$layout->render();
-	}	
+		try {
+			$query = "SELECT * FROM `product`";
+			$data = Ccc::getModel('product')->getResource()->fetchAll($query);
+			$fp = fopen('var/product.csv', 'w');
+			$header = [];
+
+			foreach ($data as $row) {
+				if (!$header) {
+					$header = array_keys($row);
+					fputcsv($fp, $header);
+				}
+				fputcsv($fp, $row);
+			}
+			
+			fclose($fp);
+
+			@header("Cache-Control: public"); 
+		    @header("Content-Description: File Transfer"); 
+		    @header("Content-Disposition: attachment; filename=product.csv"); 
+		    @header("Content-Type: text/csv"); 
+		    @header("Content-Transfer-Encoding: binary"); 
+
+			readfile('var/product.csv');
+		} catch (Exception $e) {
+			
+		}
+	}
 
 	public function uploadAction()
+    {
+		echo $this->getLayout()->createBlock('Core_Upload')->toHtml();
+    }
+
+    public function importAction()
 	{
 		try {
 			$upload = new Model_Core_File_Upload();
@@ -20,11 +47,21 @@ class Controller_Product extends Controller_Core_Action
 				->upload('csv-file');
 
 			$csv = new Model_Core_File_Csv();
-			$data = $csv->setPath('test')->setFileName($upload->getFileName())->read()->getRows();
+			$data = $csv->setPath('test')
+				->setFileName($upload->getFileName())
+				->read()
+				->getRows();
+			foreach($data as $row){
+				$uniqueColumns = $row;
+				unset($uniqueColumns['sku']);
+
+				Ccc::getModel('Core_Table_Resource')->setResourceName('product')->setPrimaryKey('product_id')->insertUpdateOnDuplicate($row, $uniqueColumns);
+			}
 
 		} catch (Exception $e) {
 			
 		}
+		$this->redirect('index','product', null,true);
 	}
 
 	public function indexAction()

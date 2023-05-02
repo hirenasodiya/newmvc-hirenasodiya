@@ -115,6 +115,10 @@ class Block_Core_Grid extends Block_Core_Template
 		if ($key == 'status') {
 			return $row->getStatusText();
 		}
+
+		if ($key == 'path') {
+			return $row->getPathCategories($row->getId());
+		}
 		return $row->$key;
 	}
 

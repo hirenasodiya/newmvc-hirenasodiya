@@ -37,8 +37,8 @@ class Model_Core_Table
 		if ($this->resource) {
 			return $this->resource;
 		}
-
-		$resource = new ($this->resourceClass)();
+		$resourceClassName = $this->resourceClass;
+		$resource = new $resourceClassName();
 		$this->setResource($resource);
 		return $resource;
 	}
@@ -54,8 +54,8 @@ class Model_Core_Table
 		if ($this->collection) {
 			return $this->collection;
 		}
-
-		$collection = new ($this->collectionClass)();
+		$collectionClassName = $this->collectionClass;
+		$collection = new $collectionClassName();
 		$this->setCollection($collection);
 		return $collection;
 	}

@@ -18,10 +18,15 @@ class Controller_Customer extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-
 			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Customer_Grid')->toHtml();
+			$gridHtml = $layout->createBlock('Customer_Grid');
+			if ($this->getRequest()->isPost()) {
+				if ($recordPerPage = (int) $this->getRequest()->getPost('selectrrp')) {
+					$gridHtml->getPager()->setRecordPerPage($recordPerPage);
+				}
+			}
 
+			$gridHtml = $gridHtml->tohtml();
 			@header("Content-Type:application/json");
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
 

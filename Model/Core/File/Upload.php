@@ -18,7 +18,7 @@ class Model_Core_File_Upload
             $this->setFileName($this->file['name']);
         }
 
-        move_uploaded_file($this->file['tmp_name'], $this->getPath(). DS . $this->getFileName());
+        move_uploaded_file($this->file['tmp_name'], $this->getPath().DS.$this->getFileName());
         return $this;
     }
 

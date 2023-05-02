@@ -10,7 +10,7 @@ $rows = $this->getCollection();
 		<a class="btn btn-dark pull-right" onclick="ajax.setUrl('<?php echo $button['url'] ?>').call()"><?php echo $button['title']; ?></a>
 		<?php endforeach; ?>
 		<a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('export'); ?>">Export</a>
-		<a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('import'); ?>">Import</a>
+		<a class="btn btn-dark pull-right" href="<?php echo $this->getUrl('upload'); ?>">Import</a>
 	</div>
 	
 </div>
@@ -43,12 +43,6 @@ $rows = $this->getCollection();
 		<?php endforeach; ?>
 		<?php endif; ?>
 	</table>
-	<?php 
-      $serialize_user_arr = serialize($user_arr);
-      ?>
-  <textarea name='export_data' style='display: none;'><?php echo $serialize_user_arr; ?></textarea>
-
-
 
 	<div class="d-flex justify-content-center">
 		<?php $pager = $this->getPager(); ?>

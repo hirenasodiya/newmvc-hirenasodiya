@@ -59,9 +59,13 @@ class Block_Admin_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$sql = "SELECT * FROM `admin`";
-		$admins = Ccc::getModel('Admin')->fetchAll($sql);
-		return $admins;
+		$query = "SELECT count('admin_id') FROM `admin` ORDER BY `admin_id` DESC";
+		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+		$this->getPager()->setTotalRecord($totalRecord)->calculate();
+
+		$query = "SELECT * FROM `admin` ORDER BY `admin_id` DESC LIMIT {$this->getPager()->getStartLimit()},{$this->getPager()->getRecordPerPage()}";
+		$admins = Ccc::getModel('admin')->fetchAll($query);
+		return $admins;	
 	}
 
 	

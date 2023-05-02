@@ -3,6 +3,35 @@
 
 class Controller_Category extends Controller_Core_Action
 {
+	public function exportAction()
+	{
+		try {
+			$query = "SELECT * FROM `category`";
+			$data = Ccc::getModel('category')->getResource()->fetchAll($query);
+			$fp = fopen('var/category.csv', 'w');
+			$header = [];
+
+			foreach ($data as $row) {
+				if (!$header) {
+					$header = array_keys($row);
+					fputcsv($fp, $header);
+				}
+				fputcsv($fp, $row);
+			}
+			
+			fclose($fp);
+
+			@header("Cache-Control: public"); 
+		    @header("Content-Description: File Transfer"); 
+		    @header("Content-Disposition: attachment; filename=category.csv"); 
+		    @header("Content-Type: text/csv"); 
+		    @header("Content-Transfer-Encoding: binary"); 
+
+			readfile('var/category.csv');
+		} catch (Exception $e) {
+			
+		}
+	}
 
 	public function indexAction()
 	{
@@ -21,10 +50,15 @@ class Controller_Category extends Controller_Core_Action
 	public function gridAction()
 	{
 		try {
-
 			$layout = $this->getLayout();
-			$gridHtml = $layout->createBlock('Category_Grid')->toHtml();
+			$gridHtml = $layout->createBlock('category_Grid');
+			if ($this->getRequest()->isPost()) {
+				if ($recordPerPage = (int) $this->getRequest()->getPost('selectrrp')) {
+					$gridHtml->getPager()->setRecordPerPage($recordPerPage);
+				}
+			}
 
+			$gridHtml = $gridHtml->tohtml();
 			@header("Content-Type:application/json");
 			echo json_encode(['html' => $gridHtml, 'element' => 'content-html']);
 

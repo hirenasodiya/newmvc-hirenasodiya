@@ -80,7 +80,6 @@ class Block_Product_Grid extends Block_Core_Grid
 			'primaryKey' => 'product_id'
 		]);
 
-		
 		return parent::_prepareActions();
 	}
 

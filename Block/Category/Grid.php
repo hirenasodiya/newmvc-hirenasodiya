@@ -16,7 +16,7 @@ class Block_Category_Grid extends Block_Core_Grid
 		$this->addColumn('category_id',[
 			'title' => 'Category Id'
 		]);
-		$this->addColumn('name',[
+		$this->addColumn('path',[
 			'title' => 'Name'
 		]);
 		$this->addColumn('status',[
@@ -63,16 +63,12 @@ class Block_Category_Grid extends Block_Core_Grid
 
 	public function getCollection()
 	{
-		$query = "SELECT count('category_id') FROM `category`";
+		$query = "SELECT count('category_id') FROM `category` WHERE `parent_id` > 1";
 		$totalRecord = Ccc::getModel('Core_Adapter')->fetchOne($query);
+		$this->getPager()->setTotalRecord($totalRecord)->calculate();
 
-		$currentPage = Ccc::getModel('Core_Request')->getParam('p');
-		$pager = $this->getPager();
-		$pager->calculate($totalRecord, $currentPage);
-		$this->setPager($pager);
-
-		$query = "SELECT * FROM `category` LIMIT $pager->startLimit, $pager->recordPerPage";
-		$categorys = Ccc::getModel('category')->fetchAll($query);
-		return $categorys;
+		$query = "SELECT * FROM `category` WHERE `parent_id` > 0 ORDER BY `category_id` DESC LIMIT {$this->getPager()->getStartLimit()},{$this->getPager()->getRecordPerPage()}";
+		$categories = Ccc::getModel('category')->fetchAll($query);
+		return $categories;	
 	}
 }
